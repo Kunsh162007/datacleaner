@@ -23,7 +23,7 @@ from datacleaner.report import (
     render_audit_markdown,
 )
 from datacleaner.llm import LLMClient, LLMError
-from datacleaner.providers import AUTO_PROVIDER, DEFAULT_PROVIDER, PROVIDERS, client_for
+from datacleaner.providers import AUTO_ORDER, AUTO_PROVIDER, DEFAULT_PROVIDER, PROVIDERS, client_for
 from datacleaner.suggest import SuggestError, review_interactively, suggest_plan
 from datacleaner.validator import validate_plan
 
@@ -101,6 +101,12 @@ def _text_writer(text: str) -> Callable[[Path], None]:
     return lambda path: path.write_text(text, encoding="utf-8")
 
 
+def _data_notice(provider: str) -> str:
+    """Say where file data goes before anything is sent."""
+    targets = " -> ".join(AUTO_ORDER) + " (fallback order)" if provider == AUTO_PROVIDER else provider
+    return f"datacleaner: sending column profiles and sample rows to: {targets}"
+
+
 def _apply(args: argparse.Namespace) -> None:
     df = _read_input(args.input)
     plan = _load_plan(args.plan)
@@ -156,6 +162,7 @@ def _suggest(
         raise CliError(f"'{args.out}' already exists; use --force to overwrite")
     try:
         client = client_factory(args.provider, args.model)
+        print(_data_notice(args.provider), file=sys.stderr)
         result = suggest_plan(args.input, client)
     except (LLMError, SuggestError) as exc:
         raise CliError(str(exc)) from exc

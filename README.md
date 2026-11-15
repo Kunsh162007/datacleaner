@@ -36,7 +36,7 @@ GEMINI_API_KEY=your-key-here
 
 Other providers use `GROQ_API_KEY` / `NVIDIA_API_KEY` the same way (non-Gemini plans record `generated_by.model` as `<provider>/<model>`).
 
-`--provider auto` (the default) tries nvidia (MiniMax), then gemini, then groq — ordered by benchmark results (each with its default model; providers without an API key are skipped; `--model` is not allowed). It moves to the next provider only on availability errors (HTTP 429/500/502/503/504, timeouts, connection errors, 404/410 model unavailable) and prints one line to stderr per fallback, e.g. `gemini unavailable (503), trying nvidia`. Validation failures are retried by `suggest` itself, and 400/401/403 (configuration errors) are raised, never skipped. `generated_by.model` records the provider/model that actually answered. Pass `--provider gemini|nvidia|groq` to pin one provider.
+`--provider auto` (opt-in) tries nvidia (MiniMax), then gemini, then groq — ordered by benchmark results (each with its default model; providers without an API key are skipped; `--model` is not allowed). It moves to the next provider only on availability errors (HTTP 429/500/502/503/504, timeouts, connection errors, 404/410 model unavailable) and prints one line to stderr per fallback, e.g. `gemini unavailable (503), trying nvidia`. Validation failures are retried by `suggest` itself, and 400/401/403 (configuration errors) are raised, never skipped. `generated_by.model` records the provider/model that actually answered. **Privacy:** every attempt sends column profiles and sample rows to that provider, so one `auto` run can share data with up to three companies. The default is a single provider (`nvidia`); use `auto` only for data you are comfortable sharing that widely. `suggest` prints where data is sent before sending.
 
 A key in `.env` takes precedence over a `GEMINI_API_KEY` set in your shell, so a machine-wide key
 for another project is never used by accident. Without `.env`, the shell variable is used.
@@ -49,7 +49,7 @@ datacleaner suggest --in data.csv --out cleaning_plan.json
 |------|---------|
 | `--in` | CSV or XLSX input (required) |
 | `--out` | plan path (default `cleaning_plan.json`) |
-| `--provider` | `auto` (default, fallback chain, see below), `gemini`, `groq` or `nvidia` |
+| `--provider` | `nvidia` (default, MiniMax), `gemini`, `groq`, or `auto` (opt-in fallback chain, see below) |
 | `--model` | model ID (default per provider: `gemini-2.5-flash`, `openai/gpt-oss-120b`, `minimaxai/minimax-m3.1-flash`) |
 | `--interactive` | approve each action; rejecting one also drops later actions on that column |
 | `--force` | overwrite an existing plan file |

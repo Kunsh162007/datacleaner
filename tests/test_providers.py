@@ -165,9 +165,16 @@ def _suggest_cli(tmp_path, *extra):
     return code, seen
 
 
-def test_cli_defaults_to_auto_fallback(tmp_path) -> None:
+def test_cli_defaults_to_single_provider(tmp_path) -> None:
     code, seen = _suggest_cli(tmp_path)
-    assert code == 0 and seen == [("auto", None)]
+    assert code == 0 and seen == [("nvidia", None)]
+
+
+def test_data_notice_names_every_recipient() -> None:
+    from datacleaner.cli import _data_notice
+
+    assert _data_notice("gemini").endswith("to: gemini")
+    assert "nvidia -> gemini -> groq" in _data_notice("auto")
 
 
 def test_cli_passes_provider_and_model(tmp_path) -> None:

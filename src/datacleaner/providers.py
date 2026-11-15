@@ -25,7 +25,7 @@ from datacleaner.llm import (
 )
 
 _MS_PER_SECOND = 1000
-DEFAULT_PROVIDER = "auto"  # fallback chain; see AUTO_ORDER
+DEFAULT_PROVIDER = "nvidia"  # one provider by default; auto (multi-company) is opt-in
 _ACCOUNT_ID = re.compile(r"\borg_[A-Za-z0-9]+")
 AUTO_PROVIDER = "auto"
 AUTO_ORDER = ("nvidia", "gemini", "groq")  # by benchmark: best-scoring first
