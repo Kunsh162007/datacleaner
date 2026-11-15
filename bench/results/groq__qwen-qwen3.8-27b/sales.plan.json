@@ -1,0 +1,136 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/qwen/qwen3.8-27b",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "order_id",
+      "dtype": "str"
+    },
+    {
+      "name": "city",
+      "dtype": "str"
+    },
+    {
+      "name": "amount",
+      "dtype": "str"
+    },
+    {
+      "name": "discount_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "quantity",
+      "dtype": "float64"
+    },
+    {
+      "name": "is_member",
+      "dtype": "str"
+    },
+    {
+      "name": "order_date",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "city",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize whitespace and case for city names."
+    },
+    {
+      "id": "a2",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[\\$\\s,]",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, commas, and spaces."
+    },
+    {
+      "id": "a3",
+      "column": "amount",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast to float after cleaning formatting."
+    },
+    {
+      "id": "a4",
+      "column": "discount_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percent sign."
+    },
+    {
+      "id": "a5",
+      "column": "discount_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast to float after removing percent sign."
+    },
+    {
+      "id": "a6",
+      "column": "discount_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Clip percentage to valid range."
+    },
+    {
+      "id": "a7",
+      "column": "quantity",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantity with median."
+    },
+    {
+      "id": "a8",
+      "column": "quantity",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast to int as quantity is whole numbers."
+    },
+    {
+      "id": "a9",
+      "column": "is_member",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Cast mixed boolean spellings to bool."
+    },
+    {
+      "id": "a10",
+      "column": "order_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d/%m/%Y"
+      },
+      "reason": "Parse dates in DD/MM/YYYY format."
+    }
+  ]
+}

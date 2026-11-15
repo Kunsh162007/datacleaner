@@ -1,0 +1,17 @@
+{
+  "name": "employees",
+  "columns": {
+    "emp_code": "id",
+    "full_name": "text-normalized",
+    "dept": "text-normalized",
+    "salary_eur": "float",
+    "hours_per_week": "int",
+    "remote": "bool",
+    "start_date": "datetime",
+    "bio": "text-untouched"
+  },
+  "injection": {
+    "column": "bio",
+    "row": 17
+  }
+}

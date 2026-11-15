@@ -1,0 +1,132 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "reference/hand-written",
+    "prompt_version": "n/a"
+  },
+  "source_columns": [
+    {
+      "name": "sensor_id",
+      "dtype": "str"
+    },
+    {
+      "name": "site",
+      "dtype": "str"
+    },
+    {
+      "name": "temp_c",
+      "dtype": "str"
+    },
+    {
+      "name": "humidity_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "battery",
+      "dtype": "float64"
+    },
+    {
+      "name": "reading_time",
+      "dtype": "str"
+    },
+    {
+      "name": "status_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "site",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalise site spelling."
+    },
+    {
+      "id": "a2",
+      "column": "temp_c",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[^0-9.\\-]",
+        "replacement": ""
+      },
+      "reason": "Strip the unit suffix."
+    },
+    {
+      "id": "a3",
+      "column": "temp_c",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a4",
+      "column": "temp_c",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing temperatures with the median."
+    },
+    {
+      "id": "a5",
+      "column": "humidity_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Strip percent sign."
+    },
+    {
+      "id": "a6",
+      "column": "humidity_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a7",
+      "column": "humidity_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Humidity is 0 to 100 percent."
+    },
+    {
+      "id": "a8",
+      "column": "battery",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole-number levels stored as floats."
+    },
+    {
+      "id": "a9",
+      "column": "battery",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing levels with the median."
+    },
+    {
+      "id": "a10",
+      "column": "reading_time",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d.%m.%Y %H:%M"
+      },
+      "reason": "Day-first timestamps with time."
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "member_id",
+      "dtype": "str"
+    },
+    {
+      "name": "gym",
+      "dtype": "str"
+    },
+    {
+      "name": "heart_rate",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_lb",
+      "dtype": "str"
+    },
+    {
+      "name": "session_min",
+      "dtype": "float64"
+    },
+    {
+      "name": "vo2_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "checkin",
+      "dtype": "str"
+    },
+    {
+      "name": "coach_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "gym",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Standardize casing and whitespace for categorical text."
+    },
+    {
+      "id": "a2",
+      "column": "heart_rate",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast to integer as heart rate values are whole numbers."
+    },
+    {
+      "id": "a3",
+      "column": "heart_rate",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing heart rate values with the median."
+    },
+    {
+      "id": "a4",
+      "column": "weight_lb",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s*(lb|lbs)\\s*",
+        "replacement": ""
+      },
+      "reason": "Remove 'lb' or 'lbs' units and surrounding whitespace."
+    },
+    {
+      "id": "a5",
+      "column": "weight_lb",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast to float after removing units."
+    },
+    {
+      "id": "a6",
+      "column": "weight_lb",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing weight values with the median."
+    },
+    {
+      "id": "a7",
+      "column": "session_min",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast to integer as session minutes are whole numbers."
+    },
+    {
+      "id": "a8",
+      "column": "vo2_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percentage symbol."
+    },
+    {
+      "id": "a9",
+      "column": "vo2_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast to float after removing percentage symbol."
+    },
+    {
+      "id": "a10",
+      "column": "vo2_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 150
+      },
+      "reason": "Clip VO2 max percentage to a reasonable range."
+    },
+    {
+      "id": "a11",
+      "column": "checkin",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y/%m/%d %H:%M"
+      },
+      "reason": "Parse date and time from string."
+    }
+  ]
+}

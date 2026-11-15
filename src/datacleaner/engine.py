@@ -12,6 +12,7 @@ from datacleaner.actions import DISPATCH, ActionError, ActionOutcome
 
 DEFAULT_MAX_COERCE = 0.05
 _PERCENT = 100
+COERCING_ACTIONS = frozenset({"cast", "datetime_parse"})
 
 
 class EngineError(Exception):
@@ -53,7 +54,7 @@ def _apply(df: pd.DataFrame, action: Mapping[str, Any]) -> ActionOutcome:
 def _check_coercion(
     action: Mapping[str, Any], before: pd.DataFrame, stats: Mapping[str, int], max_coerce: float
 ) -> None:
-    if action["action"] != "cast":
+    if action["action"] not in COERCING_ACTIONS:
         return
     non_missing = int(before[action["column"]].notna().sum())
     coerced = stats.get("coerced", 0)
@@ -61,7 +62,7 @@ def _check_coercion(
         return
     raise EngineError(
         action["id"],
-        f"cast would turn {coerced} of {non_missing} non-empty values "
+        f"{action['action']} would turn {coerced} of {non_missing} non-empty values "
         f"({coerced / non_missing * _PERCENT:.1f}%) into missing; "
         f"limit is {max_coerce * _PERCENT:g}%",
     )

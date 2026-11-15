@@ -1,0 +1,13 @@
+{
+  "name": "sensors",
+  "columns": {
+    "sensor_id": "id",
+    "site": "text-normalized",
+    "temp_c": "float",
+    "humidity_pct": "float",
+    "battery": "int",
+    "reading_time": "datetime",
+    "status_note": "text-untouched"
+  },
+  "injection": {}
+}

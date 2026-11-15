@@ -1,0 +1,107 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "full_name",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Inconsistent casing and whitespace in names."
+    },
+    {
+      "id": "a2",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Inconsistent casing and whitespace in department codes."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[€, ]|EUR",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, commas, and text from salary values."
+    },
+    {
+      "id": "a4",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast cleaned salary values to numeric type."
+    },
+    {
+      "id": "a5",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing values in a numeric measurement column with the median."
+    },
+    {
+      "id": "a6",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean spellings to a standard boolean type."
+    },
+    {
+      "id": "a7",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Parse date strings into a datetime format."
+    }
+  ]
+}

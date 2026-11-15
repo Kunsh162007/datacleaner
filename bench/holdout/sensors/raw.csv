@@ -1,0 +1,251 @@
+sensor_id,site,temp_c,humidity_pct,battery,reading_time,status_note
+S-0001,  WEST MEADOW,6.6°C,61.8%,53,01.03.2024 23:43,firmware updated
+S-0002,central  barn,1.2 °C,54.8%,31,06.03.2024 08:30,firmware updated
+S-0003,  north field,30.2 C,72.3%,59.0,26.05.2024 04:07,"signal weak, rechecked"
+S-0004,NORTH FIELD,18.9 C,60.1%,82.0,08.04.2024 02:58,firmware updated
+S-0005,   EAST DAM,10.3C,48.7%,91.0,29.03.2024 04:59,"signal weak, rechecked"
+S-0006,West Meadow,-3.6 °C,22%,10.0,05.04.2024 08:08,calibrated on site
+S-0007,  NORTH FIELD  ,13.6 C,59.4%,97.0,05.03.2024 17:43,dust on housing
+S-0008,South  Ridge,15.0C,63.4%,100.0,21.03.2024 00:20,mounting loose
+S-0009,  North Field,37.3°C,98.9%,8,24.05.2024 10:10,firmware updated
+S-0010, central barn  ,15.5 °C,69.5%,61,21.05.2024 09:40,battery swapped
+S-0011, South Ridge  ,26.6 °C,101%,93.0,03.03.2024 11:32,calibrated on site
+S-0012,North Field ,19.1C,69.4%,38,09.05.2024 05:11,dust on housing
+S-0013,west meadow,19.2C,21.4%,8.0,12.05.2024 14:40,mounting loose
+S-0014,   SOUTH RIDGE,8.4C,93.8%,74,14.04.2024 18:11,dust on housing
+S-0015, EAST DAM  ,8.9°C,74.1%,16.0,05.05.2024 14:25,firmware updated
+S-0016,North Field ,4.0°C,69.2%,12.0,30.04.2024 17:57,calibrated on site
+S-0017,  SOUTH RIDGE,24.6°C,43.4%,23.0,15.04.2024 14:31,"signal weak, rechecked"
+S-0018,north field ,30.8 C,38%,55.0,17.04.2024 11:02,firmware updated
+S-0019, North Field  ,8.9 °C,59.5%,44,16.03.2024 12:08,dust on housing
+S-0020,east dam ,12.6 °C,69.6%,NaN,30.03.2024 05:09,dust on housing
+S-0021,WEST MEADOW,16.2 °C,94.3%,28.0,16.03.2024 10:59,  keep this exact spacing  
+S-0022,   East Dam,37.2 °C,92.3%,44.0,15.05.2024 19:47,ok
+S-0023, south ridge  ,25.8°C,43.4%,28.0,10.05.2024 09:43,ok
+S-0024, west meadow  ,-0.8 C,20.5%,55.0,15.04.2024 23:48,mounting loose
+S-0025,north field ,25.7°C,42%,67,08.05.2024 21:56,"signal weak, rechecked"
+S-0026,SOUTH RIDGE,10.0C,38.3%,12.0,16.05.2024 04:13,firmware updated
+S-0027,central barn,34.8°C,57.6%,48.0,08.04.2024 13:15,"signal weak, rechecked"
+S-0028, east dam  ,N/A,29.7%,22.0,30.04.2024 21:40,firmware updated
+S-0029,  East Dam,20.5 °C,80.5%,67,01.04.2024 04:17,battery swapped
+S-0030,  EAST DAM  ,21.3°C,30%,61.0,07.05.2024 19:21,ok
+S-0031,central  barn,1.7°C,69.1%,47.0,29.03.2024 04:51,"signal weak, rechecked"
+S-0032,west meadow,33.2 °C,94.3%,83.0,01.04.2024 20:21,firmware updated
+S-0033,   central barn,-1.8 C,73.1%,37,15.03.2024 21:34,mounting loose
+S-0034, south ridge  ,3.1 °C,41.6%,32.0,23.04.2024 16:19,dust on housing
+S-0035,EAST DAM ,6.7 C,91.3%,80,17.04.2024 21:05,mounting loose
+S-0036,east  dam ,0.9°C,25.9%,42.0,05.04.2024 12:34,"signal weak, rechecked"
+S-0037, WEST MEADOW  ,12.8°C,24.1%,19.0,18.04.2024 08:19,mounting loose
+S-0038,  East Dam,20.9°C,93.7%,34,04.04.2024 13:59,mounting loose
+S-0039,CENTRAL BARN,-0.3 C,105%,61.0,10.03.2024 21:12,"signal weak, rechecked"
+S-0040,NORTH FIELD ,37.6 C,50.3%,15,08.03.2024 01:44,ok
+S-0041, SOUTH RIDGE  ,-4.0°C,82.9%,84.0,26.03.2024 04:57,"signal weak, rechecked"
+S-0042,North Field,32.4C,71.4%,41.0,01.04.2024 13:12,mounting loose
+S-0043,   SOUTH RIDGE,28.8°C,59.8%,75.0,15.05.2024 05:46,ok
+S-0044,CENTRAL BARN ,14.6C,45.8%,37.0,08.05.2024 08:23,ok
+S-0045,North Field ,21.4°C,49.4%,10,21.04.2024 12:58,"signal weak, rechecked"
+S-0046,  CENTRAL BARN,8.6 °C,94%,45.0,22.03.2024 18:36,ok
+S-0047,East Dam,null,81.6%,52,29.03.2024 19:41,calibrated on site
+S-0048,  WEST MEADOW,16.2 C,83.8%,30.0,01.05.2024 07:19,calibrated on site
+S-0049, south ridge  ,17.8 C,76.7%,19.0,19.03.2024 08:33,battery swapped
+S-0050,West Meadow ,23.2 °C,91.7%,78.0,29.04.2024 04:07,firmware updated
+S-0051,   SOUTH RIDGE,-3.1 °C,57.3%,99.0,20.05.2024 23:32,dust on housing
+S-0052,  west meadow,29.1 °C,96.7%,71,19.04.2024 23:29,ok
+S-0053,  CENTRAL BARN,32.8 °C,72.9%,10,11.04.2024 00:24,mounting loose
+S-0054,NORTH FIELD,-4.6 °C,78%,43,20.04.2024 19:25,mounting loose
+S-0055,east  dam ,-2.0C,32.9%,null,28.05.2024 23:55,battery swapped
+S-0056,Central  Barn ,2.3 C,67%,94.0,09.04.2024 16:35,ok
+S-0057, east dam  ,33.1C,40.3%,N/A,31.03.2024 23:55,dust on housing
+S-0058,west meadow ,24.8 C,27.3%,25,25.04.2024 07:47,dust on housing
+S-0059,  South Ridge  ,-3.0°C,89%,55.0,21.04.2024 00:54,mounting loose
+S-0060,Central  Barn ,9.2C,50.1%,null,02.04.2024 08:31,dust on housing
+S-0061,   WEST MEADOW,0.8C,93.3%,84.0,14.05.2024 01:58,ok
+S-0062,  east dam  ,18.0C,26.9%,60.0,26.04.2024 16:17,"signal weak, rechecked"
+S-0063,south  ridge,26.0°C,46.7%,99.0,14.03.2024 16:55,ok
+S-0064, South Ridge  ,28.0 C,75.7%,26.0,19.04.2024 17:35,ok
+S-0065,  NORTH FIELD,37.3°C,24.7%,59.0,10.05.2024 19:58,dust on housing
+S-0066,   West Meadow,0.7 °C,104%,47.0,16.03.2024 14:20,firmware updated
+S-0067,  South Ridge,30.6 °C,21.7%,87,08.04.2024 21:52,dust on housing
+S-0068,  East Dam,33.9 C,63.5%,27.0,24.05.2024 03:36,"signal weak, rechecked"
+S-0069,East Dam,36.3 C,52.5%,48.0,27.04.2024 01:30,ok
+S-0070, CENTRAL BARN  ,-3.7C,80.4%,12.0,03.03.2024 09:46,ok
+S-0071,  WEST MEADOW,-3.1°C,47.6%,56,10.03.2024 12:08,dust on housing
+S-0072,South  Ridge,8.8 C,28.6%,97.0,14.04.2024 11:24,firmware updated
+S-0073,central barn,1.3 C,82.5%,52,12.03.2024 02:45,firmware updated
+S-0074,   SOUTH RIDGE,6.4C,58.3%,47,27.03.2024 00:23,"signal weak, rechecked"
+S-0075,WEST  MEADOW ,NaN,60.6%,44,21.03.2024 23:49,ok
+S-0076,NORTH FIELD,2.5 °C,66.7%,83.0,14.04.2024 14:58,"signal weak, rechecked"
+S-0077,North Field ,30.9 C,48.6%,55,21.03.2024 06:54,ok
+S-0078,  WEST MEADOW  ,30.4 °C,69.6%,23.0,06.03.2024 21:47,mounting loose
+S-0079,  NORTH FIELD  ,24.9 °C,85.8%,60.0,13.04.2024 17:47,calibrated on site
+S-0080,  south ridge,31.6°C,67.5%,38.0,28.03.2024 22:55,calibrated on site
+S-0081,Central Barn ,,78.6%,84.0,30.03.2024 12:21,mounting loose
+S-0082, central barn  ,20.8 °C,83.8%,44.0,19.04.2024 09:52,dust on housing
+S-0083,EAST DAM ,10.8°C,76%,N/A,25.04.2024 19:18,"signal weak, rechecked"
+S-0084,EAST DAM ,17.9°C,77.7%,74.0,11.05.2024 06:12,"signal weak, rechecked"
+S-0085, CENTRAL BARN  ,19.7°C,37.3%,96.0,23.04.2024 16:34,calibrated on site
+S-0086,WEST MEADOW,6.0°C,28.2%,53.0,13.04.2024 13:34,calibrated on site
+S-0087,  east dam  ,19.1C,32.6%,60.0,13.04.2024 11:09,mounting loose
+S-0088,SOUTH RIDGE,34.8 C,77.6%,98.0,24.05.2024 09:47,mounting loose
+S-0089,West  Meadow,,69.4%,95.0,19.03.2024 19:47,firmware updated
+S-0090,  WEST MEADOW,32.5C,83.8%,40.0,02.05.2024 05:35,battery swapped
+S-0091, EAST DAM  ,24.9°C,90.9%,8.0,26.05.2024 20:35,ok
+S-0092, west meadow  ,17.5 C,77.7%,8,17.04.2024 19:22,mounting loose
+S-0093,South Ridge ,34.0 °C,48.8%,88.0,15.05.2024 03:50,calibrated on site
+S-0094,SOUTH RIDGE ,-0.4C,101%,NaN,22.04.2024 17:50,battery swapped
+S-0095,North Field ,30.7C,37.4%,72.0,12.04.2024 06:47,"signal weak, rechecked"
+S-0096,WEST  MEADOW,28.4C,80.3%,91.0,04.05.2024 11:26,battery swapped
+S-0097,central barn ,-0.8C,85.1%,38,07.05.2024 11:48,firmware updated
+S-0098,west  meadow,31.0 C,41.8%,37,08.03.2024 05:07,battery swapped
+S-0099, West Meadow  ,27.8 °C,20.2%,87.0,07.05.2024 17:33,mounting loose
+S-0100,WEST  MEADOW,37.3°C,47.1%,53.0,07.05.2024 22:32,"signal weak, rechecked"
+S-0101, east dam  ,11.4 °C,24.2%,85.0,10.04.2024 01:36,battery swapped
+S-0102,  NORTH FIELD,2.8°C,43.1%,30,20.04.2024 13:38,calibrated on site
+S-0103,east dam ,,39.2%,96.0,18.04.2024 00:38,"signal weak, rechecked"
+S-0104,  WEST MEADOW,16.6°C,83.2%,71.0,28.05.2024 21:27,calibrated on site
+S-0105,   east dam,9.9C,53.4%,80.0,25.04.2024 06:22,battery swapped
+S-0106,WEST MEADOW ,28.2°C,56.4%,93.0,17.03.2024 06:03,ok
+S-0107,central barn ,-0.2 °C,74.3%,7.0,15.05.2024 02:31,battery swapped
+S-0108,  CENTRAL BARN,3.9C,98.3%,60,29.03.2024 00:22,mounting loose
+S-0109,Central Barn,36.1 °C,33.6%,55.0,17.05.2024 18:02,"signal weak, rechecked"
+S-0110,east  dam,3.7°C,81.3%,61.0,16.03.2024 02:06,mounting loose
+S-0111,South  Ridge ,-0.7 C,43.8%,19.0,10.05.2024 13:58,mounting loose
+S-0112,SOUTH RIDGE,14.2 °C,20.7%,35.0,29.04.2024 00:09,calibrated on site
+S-0113,   CENTRAL BARN,21.2 C,67.4%,33.0,27.05.2024 20:48,ok
+S-0114,south  ridge ,24.4 C,26.9%,74.0,17.03.2024 22:29,calibrated on site
+S-0115,   North Field,31.1°C,33.9%,52.0,07.04.2024 05:15,firmware updated
+S-0116, South Ridge  ,22.8C,42%,86,05.03.2024 22:22,dust on housing
+S-0117,  NORTH FIELD  ,34.0C,41%,44,15.03.2024 22:54,battery swapped
+S-0118,   EAST DAM,-0.4 C,32.9%,59,12.04.2024 00:19,calibrated on site
+S-0119,  WEST MEADOW  ,24.2C,42.3%,null,16.05.2024 05:53,firmware updated
+S-0120, central barn  ,33.6°C,80.4%,52,24.03.2024 10:28,"signal weak, rechecked"
+S-0121,east  dam,4.1 °C,53.8%,80,27.04.2024 06:43,calibrated on site
+S-0122,south ridge,28.6C,75.3%,22,07.03.2024 10:59,dust on housing
+S-0123,SOUTH RIDGE,8.3C,42.8%,47.0,23.05.2024 22:58,calibrated on site
+S-0124,West  Meadow ,4.0°C,65%,41,01.03.2024 22:01,"signal weak, rechecked"
+S-0125,   south ridge,34.3 °C,47.7%,67.0,23.05.2024 03:52,firmware updated
+S-0126,East Dam ,25.9C,39.9%,25.0,18.05.2024 20:10,mounting loose
+S-0127,central barn ,36.6 C,65.4%,51,21.04.2024 06:58,calibrated on site
+S-0128,central  barn,5.4 C,53.3%,null,30.04.2024 19:39,battery swapped
+S-0129,  CENTRAL BARN,30.4°C,92.6%,17.0,30.03.2024 09:31,dust on housing
+S-0130, South Ridge  ,12.4 C,75.1%,78.0,18.05.2024 17:39,calibrated on site
+S-0131,  north field,5.6 C,85.8%,98,08.05.2024 13:47,calibrated on site
+S-0132,SOUTH RIDGE,12.1°C,68.5%,28,18.03.2024 00:46,calibrated on site
+S-0133,  West Meadow,N/A,27.8%,29.0,24.05.2024 18:56,ok
+S-0134,east dam ,31.3 C,24.5%,100,27.04.2024 01:20,battery swapped
+S-0135, CENTRAL BARN  ,-0.8°C,70.8%,25.0,07.04.2024 16:00,"signal weak, rechecked"
+S-0136,West  Meadow,12.0°C,22.6%,34,18.04.2024 18:13,calibrated on site
+S-0137,south  ridge,18.5C,71.1%,52.0,15.05.2024 01:05,mounting loose
+S-0138,  central barn  ,9.8C,58.4%,6.0,15.03.2024 16:43,calibrated on site
+S-0139,  South Ridge,13.8°C,25.8%,32.0,02.03.2024 21:30,dust on housing
+S-0140,west meadow,37.3 °C,58%,73.0,07.04.2024 21:12,mounting loose
+S-0141, East Dam  ,13.4C,67.7%,38.0,15.04.2024 16:24,"signal weak, rechecked"
+S-0142,central barn ,36.4C,42.3%,47,09.03.2024 06:35,firmware updated
+S-0143,   East Dam,36.1 °C,56.9%,98,10.04.2024 00:28,mounting loose
+S-0144,South Ridge,29.5 C,63.5%,44,23.05.2024 09:32,dust on housing
+S-0145,east dam ,8.7 °C,42.8%,47,08.04.2024 04:19,mounting loose
+S-0146,  NORTH FIELD,20.7 °C,72.6%,32,10.03.2024 09:09,firmware updated
+S-0147,  central barn,34.7°C,96.7%,23,29.05.2024 02:45,dust on housing
+S-0148,central barn ,-3.1 C,42.7%,18.0,23.05.2024 19:17,dust on housing
+S-0149, West Meadow  ,20.0C,101%,69.0,20.04.2024 21:32,"signal weak, rechecked"
+S-0150,   South Ridge,-0.4C,74.4%,65.0,24.03.2024 10:45,firmware updated
+S-0151,east  dam,18.4 C,48.4%,34.0,22.05.2024 18:20,dust on housing
+S-0152,central  barn,-1.0 °C,98.7%,15.0,19.03.2024 01:14,mounting loose
+S-0153,North Field ,,41.9%,15,10.05.2024 03:10,ok
+S-0154,  East Dam,35.8 °C,22.3%,26.0,05.03.2024 12:54,firmware updated
+S-0155, East Dam  ,NaN,36.2%,34,18.03.2024 02:23,calibrated on site
+S-0156,central barn ,16.1°C,27.3%,16,17.03.2024 02:52,ok
+S-0157,west meadow,20.4 °C,89.9%,54,18.04.2024 11:03,firmware updated
+S-0158, east dam  ,4.0°C,78.7%,,12.05.2024 10:45,mounting loose
+S-0159,west meadow ,33.2°C,81.8%,8,18.04.2024 06:37,ok
+S-0160,  North Field,33.1C,60.4%,19.0,24.03.2024 12:27,"signal weak, rechecked"
+S-0161,south  ridge ,9.4 C,75.6%,69.0,19.04.2024 00:31,dust on housing
+S-0162,north field,17.9°C,60.6%,null,05.05.2024 13:57,battery swapped
+S-0163, East Dam  ,25.2 °C,31%,71.0,07.03.2024 04:29,battery swapped
+S-0164,East Dam ,34.0 °C,68.1%,85.0,08.05.2024 06:31,dust on housing
+S-0165,WEST MEADOW ,8.8 C,67.7%,96.0,30.03.2024 03:46,ok
+S-0166,central barn ,null,35.4%,52,02.04.2024 14:17,"signal weak, rechecked"
+S-0167,  east dam,-0.1 °C,43%,null,26.03.2024 17:38,dust on housing
+S-0168,   EAST DAM,19.9 °C,44.8%,87,18.05.2024 20:44,battery swapped
+S-0169,West Meadow ,14.2C,92.7%,98.0,21.03.2024 15:38,battery swapped
+S-0170, East Dam  ,12.6C,90.7%,27.0,01.04.2024 08:49,battery swapped
+S-0171,NORTH  FIELD ,20.6°C,65.4%,50,18.05.2024 00:58,battery swapped
+S-0172,North  Field ,7.3C,42%,97.0,17.05.2024 20:59,mounting loose
+S-0173,  Central Barn  ,23.6C,82%,18,17.04.2024 03:01,battery swapped
+S-0174,West  Meadow ,-0.3 °C,87.5%,40,18.03.2024 02:27,mounting loose
+S-0175,WEST MEADOW ,null,53.1%,49.0,20.05.2024 22:45,mounting loose
+S-0176,   West Meadow,null,25.5%,96,25.03.2024 14:28,calibrated on site
+S-0177,West Meadow,28.2C,92.6%,88.0,19.03.2024 16:31,firmware updated
+S-0178,EAST  DAM,31.5C,92.8%,7.0,30.03.2024 04:37,"signal weak, rechecked"
+S-0179,  south ridge,4.2°C,98.8%,59.0,26.05.2024 22:04,battery swapped
+S-0180,CENTRAL BARN,2.9 °C,74.4%,35.0,30.04.2024 14:35,firmware updated
+S-0181,SOUTH RIDGE,-1.1C,102%,43.0,08.03.2024 09:53,battery swapped
+S-0182, west meadow  ,28.1 °C,93.2%,73.0,28.05.2024 02:56,"signal weak, rechecked"
+S-0183,  central barn,33.5°C,52.3%,null,27.03.2024 16:05,firmware updated
+S-0184,East Dam ,30.5 °C,61.6%,13.0,16.03.2024 11:05,calibrated on site
+S-0185,west meadow,10.0C,46.4%,30,30.03.2024 19:36,dust on housing
+S-0186,   south ridge,9.3°C,104%,15.0,11.03.2024 06:04,mounting loose
+S-0187, south ridge  ,-2.7C,64.5%,64.0,19.03.2024 08:38,calibrated on site
+S-0188,   North Field,13.4 C,74.8%,81.0,08.05.2024 05:06,calibrated on site
+S-0189, east dam  ,17.7°C,58.6%,56.0,14.04.2024 02:53,calibrated on site
+S-0190, SOUTH RIDGE  ,37.4C,41.2%,48.0,24.05.2024 00:34,battery swapped
+S-0191, south ridge  ,16.9 C,89.2%,12.0,03.03.2024 08:10,calibrated on site
+S-0192,   west meadow,12.3°C,34.5%,85,03.05.2024 14:12,mounting loose
+S-0193,Central Barn,27.7 C,24.4%,18.0,16.03.2024 00:35,ok
+S-0194,NORTH FIELD,22.2 °C,59%,9.0,14.04.2024 04:21,battery swapped
+S-0195,  west meadow  ,-2.0°C,24.3%,72.0,30.04.2024 07:35,firmware updated
+S-0196,  north field,-1.8 °C,30.6%,6.0,04.05.2024 21:42,calibrated on site
+S-0197,  south ridge,36.5 C,91.6%,97,04.05.2024 00:15,firmware updated
+S-0198,west meadow,26.2 C,75.4%,47.0,10.04.2024 10:08,"signal weak, rechecked"
+S-0199,East Dam,31.7 C,83.6%,8.0,31.03.2024 08:52,ok
+S-0200,  EAST DAM  ,14.5 °C,84.5%,97,14.04.2024 17:20,battery swapped
+S-0201,north field,30.2C,85.7%,92,08.05.2024 03:18,dust on housing
+S-0202,  east dam,16.4 C,86%,37,25.04.2024 17:13,ok
+S-0203,EAST DAM ,11.5 °C,101%,31,19.04.2024 23:51,mounting loose
+S-0204,CENTRAL BARN ,16.0C,86%,7.0,04.03.2024 23:32,firmware updated
+S-0205,WEST MEADOW,15.9°C,26.6%,14.0,26.04.2024 23:01,firmware updated
+S-0206,WEST MEADOW ,32.6C,92%,78,02.03.2024 05:13,calibrated on site
+S-0207, west meadow  ,21.2°C,86.1%,45.0,14.04.2024 06:16,mounting loose
+S-0208,central barn,19.5 °C,99%,51.0,26.04.2024 17:36,dust on housing
+S-0209,   east dam,10.2°C,56.6%,86,18.05.2024 22:05,ok
+S-0210,  Central Barn,12.0C,38.9%,9.0,11.04.2024 01:02,battery swapped
+S-0211,   West Meadow,13.7°C,20.7%,86,09.05.2024 17:42,dust on housing
+S-0212,  EAST DAM,37.1 °C,51%,9.0,27.03.2024 11:00,ok
+S-0213,  NORTH FIELD,14.3C,42.2%,77.0,01.05.2024 05:48,"signal weak, rechecked"
+S-0214,South Ridge,3.1 C,74.6%,87.0,24.04.2024 04:37,firmware updated
+S-0215,  East Dam,17.8 C,21%,35.0,14.05.2024 08:10,mounting loose
+S-0216, NORTH FIELD  ,37.9 °C,72.2%,100.0,03.03.2024 12:24,firmware updated
+S-0217,NORTH FIELD,,64.2%,68.0,01.04.2024 01:47,firmware updated
+S-0218,  North Field,16.8 C,20.8%,59.0,05.04.2024 03:28,firmware updated
+S-0219, central barn  ,17.5 °C,20.4%,15.0,20.05.2024 01:53,firmware updated
+S-0220, South Ridge  ,-4.4C,90.6%,22,04.05.2024 09:59,ok
+S-0221,EAST DAM ,31.0C,42.9%,NaN,02.04.2024 22:44,calibrated on site
+S-0222,CENTRAL  BARN,27.6 C,53.3%,,01.03.2024 22:37,"signal weak, rechecked"
+S-0223,Central Barn,,43.5%,41.0,08.03.2024 16:51,battery swapped
+S-0224,west meadow,11.1C,96.9%,38,14.04.2024 16:58,"signal weak, rechecked"
+S-0225,  EAST DAM,31.9°C,59.5%,,01.03.2024 07:17,battery swapped
+S-0226,  east dam  ,21.1°C,35.9%,31.0,27.03.2024 13:56,dust on housing
+S-0227,EAST DAM ,36.5 °C,38%,91,03.05.2024 12:37,calibrated on site
+S-0228,  CENTRAL BARN  ,26.7°C,83.8%,58.0,15.04.2024 10:55,dust on housing
+S-0229,EAST DAM ,-5.0 °C,62.7%,23.0,22.05.2024 23:09,dust on housing
+S-0230,  SOUTH RIDGE,N/A,60.6%,51.0,16.03.2024 23:53,dust on housing
+S-0231,east dam ,10.6 °C,31.9%,100.0,19.03.2024 02:28,calibrated on site
+S-0232,  east dam  ,12.5°C,59.6%,97.0,11.03.2024 11:11,ok
+S-0233,east dam ,25.1 C,96.7%,12.0,23.04.2024 04:21,battery swapped
+S-0234,north  field,6.7 °C,63.6%,66.0,28.03.2024 00:33,dust on housing
+S-0235,   EAST DAM,18.7 C,24.8%,11.0,19.03.2024 01:35,dust on housing
+S-0236,east dam ,28.8 °C,94.3%,82.0,07.04.2024 07:35,firmware updated
+S-0237,  Central Barn,10.9C,38.7%,36.0,24.05.2024 07:23,calibrated on site
+S-0238,  South Ridge,16.9 C,97.7%,95,12.05.2024 07:49,mounting loose
+S-0239,east dam ,-0.3C,56.7%,28.0,08.04.2024 16:45,calibrated on site
+S-0240,South  Ridge,-1.4 C,47.4%,10.0,06.03.2024 06:18,calibrated on site
+S-0241, West Meadow  ,-4.2C,74.1%,65.0,19.05.2024 15:07,"signal weak, rechecked"
+S-0242,   North Field,17.2 C,34.9%,40,08.03.2024 21:14,firmware updated
+S-0243,south ridge,6.0 °C,82.8%,60.0,02.04.2024 14:11,"signal weak, rechecked"
+S-0244,  CENTRAL BARN,33.8C,76.3%,18.0,02.04.2024 21:26,calibrated on site
+S-0245,  EAST DAM,-4.2 °C,75.6%,46,04.05.2024 22:37,calibrated on site
+S-0246,  South Ridge,1.2°C,47.1%,N/A,11.05.2024 01:16,calibrated on site
+S-0247,  CENTRAL BARN,32.0C,59.2%,66.0,26.04.2024 18:27,battery swapped
+S-0248,West Meadow,1.9C,70.2%,59,31.03.2024 10:07,"signal weak, rechecked"
+S-0249,  NORTH FIELD  ,34.2 C,82.3%,47,09.05.2024 02:11,ok
+S-0250,South  Ridge ,8.8°C,31.5%,7.0,13.05.2024 11:10,dust on housing

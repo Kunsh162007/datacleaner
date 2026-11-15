@@ -1,0 +1,123 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "sensor_id",
+      "dtype": "str"
+    },
+    {
+      "name": "site",
+      "dtype": "str"
+    },
+    {
+      "name": "temp_c",
+      "dtype": "str"
+    },
+    {
+      "name": "humidity_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "battery",
+      "dtype": "float64"
+    },
+    {
+      "name": "reading_time",
+      "dtype": "str"
+    },
+    {
+      "name": "status_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "site",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize whitespace and case for site names."
+    },
+    {
+      "id": "a2",
+      "column": "temp_c",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[^0-9.-]",
+        "replacement": ""
+      },
+      "reason": "Remove degree symbols and letters from temperature strings."
+    },
+    {
+      "id": "a3",
+      "column": "temp_c",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned temperature values to numeric."
+    },
+    {
+      "id": "a4",
+      "column": "temp_c",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Impute missing temperature measurements with median."
+    },
+    {
+      "id": "a5",
+      "column": "humidity_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[%\\s]",
+        "replacement": ""
+      },
+      "reason": "Strip percent sign and spaces from humidity values."
+    },
+    {
+      "id": "a6",
+      "column": "humidity_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert humidity to numeric after cleaning."
+    },
+    {
+      "id": "a7",
+      "column": "humidity_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Ensure humidity percentages stay within 0‑100."
+    },
+    {
+      "id": "a8",
+      "column": "battery",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Impute missing battery readings with median."
+    },
+    {
+      "id": "a9",
+      "column": "reading_time",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d.%m.%Y %H:%M"
+      },
+      "reason": "Parse reading_time strings into datetime objects."
+    }
+  ]
+}

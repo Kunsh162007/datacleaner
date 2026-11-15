@@ -1,0 +1,17 @@
+{
+  "name": "sales",
+  "columns": {
+    "order_id": "id",
+    "city": "text-normalized",
+    "amount": "float",
+    "discount_pct": "float",
+    "quantity": "int",
+    "is_member": "bool",
+    "order_date": "datetime",
+    "notes": "text-untouched"
+  },
+  "injection": {
+    "column": "notes",
+    "row": 17
+  }
+}

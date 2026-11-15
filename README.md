@@ -34,6 +34,10 @@ Put the key in a `.env` file in the project root (already git-ignored):
 GEMINI_API_KEY=your-key-here
 ```
 
+Other providers use `GROQ_API_KEY` / `NVIDIA_API_KEY` the same way (non-Gemini plans record `generated_by.model` as `<provider>/<model>`).
+
+`--provider auto` (the default) tries nvidia (MiniMax), then gemini, then groq — ordered by benchmark results (each with its default model; providers without an API key are skipped; `--model` is not allowed). It moves to the next provider only on availability errors (HTTP 429/500/502/503/504, timeouts, connection errors, 404/410 model unavailable) and prints one line to stderr per fallback, e.g. `gemini unavailable (503), trying nvidia`. Validation failures are retried by `suggest` itself, and 400/401/403 (configuration errors) are raised, never skipped. `generated_by.model` records the provider/model that actually answered. Pass `--provider gemini|nvidia|groq` to pin one provider.
+
 A key in `.env` takes precedence over a `GEMINI_API_KEY` set in your shell, so a machine-wide key
 for another project is never used by accident. Without `.env`, the shell variable is used.
 
@@ -45,7 +49,8 @@ datacleaner suggest --in data.csv --out cleaning_plan.json
 |------|---------|
 | `--in` | CSV or XLSX input (required) |
 | `--out` | plan path (default `cleaning_plan.json`) |
-| `--model` | Gemini model ID (default `gemini-2.5-flash`, pinned for reproducibility) |
+| `--provider` | `auto` (default, fallback chain, see below), `gemini`, `groq` or `nvidia` |
+| `--model` | model ID (default per provider: `gemini-2.5-flash`, `openai/gpt-oss-120b`, `minimaxai/minimax-m3.1-flash`) |
 | `--interactive` | approve each action; rejecting one also drops later actions on that column |
 | `--force` | overwrite an existing plan file |
 
@@ -75,7 +80,7 @@ Exit code `0` on success, `1` on any validation or execution error.
 ```json
 {
   "plan_version": 1,
-  "generated_by": {"model": "gemini-2.5-flash", "prompt_version": "2"},
+  "generated_by": {"model": "gemini-2.5-flash", "prompt_version": "3"},
   "source_columns": [{"name": "price", "dtype": "object"}],
   "actions": [
     {"id": "a1", "column": "price", "action": "regex_replace",
@@ -94,6 +99,9 @@ Actions run in order, as one queue:
 | `fillna` | `strategy`: `mean` / `median` / `mode` / `constant` (+ `value`) | mean/median numeric only; mode ties → smallest |
 | `regex_replace` | `pattern`, `replacement` | RE2 syntax (no catastrophic backtracking); text values only |
 | `drop` | none | destructive — always flagged in the audit |
+| `strip` | `case`: `none` / `lower` / `upper` / `title` | trims, collapses inner whitespace to one space, then applies case; text values only |
+| `datetime_parse` | `format`: strftime string (`%Y %m %d %H %M %S %b %B %y %j`, separators `- / space . : T ,`) | failures become NaT and count toward `--max-coerce`; CSV output is ISO (`YYYY-MM-DD`, or `YYYY-MM-DDTHH:MM:SS` if any time is present) |
+| `clip` | `min` and/or `max` (min <= max) | numeric columns only |
 
 ## How LLM output is guarded
 
@@ -119,6 +127,39 @@ Change `DATA_FILE`, `PLAN_FILE` and `MAX_COERCE` in the workflow's `env:` block.
 ```bash
 datacleaner apply --in examples/messy.csv --plan examples/cleaning_plan.json --out-dir cleaned
 ```
+
+## Benchmark
+
+- `python -m bench.generate` writes three seeded messy datasets to `bench/data/` (raw, ground truth,
+  column kinds, hand-written reference plan).
+- `python -m bench.run --provider groq [--model M] [--delay 5]` asks the LLM for a plan per dataset,
+  scores it with the real engine and writes `bench/results/<provider>__<model>/summary.md`. `--delay`
+  is the pause between datasets; a 429 is retried once after 60 s, a 503 after 20 s.
+- `python -m bench.run --compare` builds `bench/results/leaderboard.md`.
+
+### Tuning vs held-out suites
+
+- **tuning** (`bench/data/`: sales, patients, products) is the suite the prompt was iterated on.
+- **holdout** (`bench/holdout/`: employees, sensors) uses different domains, column names and
+  messiness (euro amounts with an `EUR` suffix, unit suffixes like `21.4 °C`, dotted dates,
+  timestamps with a time, percent values with sensor glitches above 100). The prompt was never
+  tuned on it, so it measures overfitting.
+- **Do not edit the prompt based on holdout results.** Doing so turns the holdout into a second
+  tuning set and it stops being held-out. Use it only to compare tuning vs holdout scores; if a
+  new suite is needed, add fresh datasets.
+- `python -m bench.generate [--suite tuning|holdout|holdout2]` regenerates all by default (deterministic).
+- **holdout2** (`bench/holdout2/`: invoices, fitness) is the fresh, never-tuned set, created after prompt v5 (whole-number hint) with new domains and seeds. Run it with `--suite holdout2` (results in `bench/results/holdout2/`); the same rule applies: do not tune the prompt on it.
+- `python -m bench.run --suite holdout ...` writes to `bench/results/holdout/<run>/`;
+  `python -m bench.run --suite holdout --compare` builds `bench/results/holdout/leaderboard.md`.
+- `--repeat N` runs each dataset N times (plans saved as `<name>.rK.plan.json`); the summary then
+  shows mean and min score per dataset so run-to-run variance is visible. Default is 1.
+
+Missing-value policy (what the ground truth and the prompt both assume): numeric measurement, count
+and score columns are filled with the median (integer columns: median rounded half-to-even, so they
+stay integer); money columns (price, amount, income, ...), ids, dates, booleans and text stay missing.
+Text-normalised columns are scored case-insensitively.
+
+Missing tokens used are only those pandas reads as NaN (`""`, `N/A`, `null`, `NaN`).
 
 ## Development
 

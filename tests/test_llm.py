@@ -104,3 +104,84 @@ def test_empty_response_raises(monkeypatch, text) -> None:
     _stub(monkeypatch, text=text)
     with pytest.raises(LLMError, match="empty"):
         GeminiClient(SECRET, "m").complete_json("s", "u", SCHEMA)
+
+
+# ----------------------------------------------------- transient classification
+# stand-ins named like httpx's classes (httpx is not a direct dependency)
+class TimeoutException(Exception):
+    pass
+
+
+class ReadTimeout(TimeoutException):
+    pass
+
+
+class TransportError(Exception):
+    pass
+
+
+class ConnectError(TransportError):
+    pass
+
+
+class httpx:  # noqa: N801
+    ReadTimeout = ReadTimeout
+    ConnectError = ConnectError
+
+from datacleaner.llm import TransientLLMError  # noqa: E402
+
+
+class _CodedError(Exception):
+    def __init__(self, code: int) -> None:
+        super().__init__("boom")
+        self.code = code
+        self.status = "X"
+
+
+@pytest.mark.parametrize("code", [404, 410, 429, 500, 502, 503, 504])
+def test_gemini_transient_status_codes(monkeypatch, code) -> None:
+    _stub(monkeypatch, error=_CodedError(code))
+    with pytest.raises(TransientLLMError) as info:
+        GeminiClient(SECRET, "m").complete_json("s", "u", SCHEMA)
+    assert info.value.reason == str(code)
+
+
+@pytest.mark.parametrize("code", [400, 401, 403])
+def test_gemini_config_errors_are_not_transient(monkeypatch, code) -> None:
+    _stub(monkeypatch, error=_CodedError(code))
+    with pytest.raises(LLMError) as info:
+        GeminiClient(SECRET, "m").complete_json("s", "u", SCHEMA)
+    assert not isinstance(info.value, TransientLLMError)
+
+
+@pytest.mark.parametrize(
+    ("error", "reason"),
+    [
+        (httpx.ReadTimeout("slow"), "timeout"),
+        (TimeoutError("slow"), "timeout"),
+        (httpx.ConnectError("down"), "connection error"),
+        (ConnectionResetError("reset"), "connection error"),
+    ],
+)
+def test_gemini_timeouts_and_connection_errors_are_transient(monkeypatch, error, reason) -> None:
+    _stub(monkeypatch, error=error)
+    with pytest.raises(TransientLLMError) as info:
+        GeminiClient(SECRET, "m").complete_json("s", "u", SCHEMA)
+    assert info.value.reason == reason
+
+
+def test_gemini_empty_response_is_not_transient(monkeypatch) -> None:
+    _stub(monkeypatch, text="  ")
+    with pytest.raises(LLMError) as info:
+        GeminiClient(SECRET, "m").complete_json("s", "u", SCHEMA)
+    assert not isinstance(info.value, TransientLLMError)
+
+
+def test_wrapped_cause_is_classified() -> None:
+    try:
+        try:
+            raise httpx.ReadTimeout("slow")
+        except httpx.ReadTimeout as inner:
+            raise RuntimeError("wrapped") from inner
+    except RuntimeError as exc:
+        assert isinstance(llm.classify_failure(exc, "m"), TransientLLMError)

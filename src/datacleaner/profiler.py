@@ -53,6 +53,7 @@ class ColumnProfile:
     min_length: int
     max_length: int
     numeric_fraction: float
+    whole_numbers: bool = False
 
 
 @dataclass(frozen=True)
@@ -98,6 +99,18 @@ def _is_numeric(value: str) -> bool:
         return False
 
 
+def _is_whole_number(value: str) -> bool:
+    """True for plain numbers equal to their integer part ("53", "87.0", " 12 ")."""
+    text = value.strip()
+    if not text or "_" in text:
+        return False
+    try:
+        number = float(text)
+    except ValueError:
+        return False
+    return math.isfinite(number) and number == math.floor(number)
+
+
 def _datetime_fraction(values: list[str]) -> float:
     parsed = pd.to_datetime(pd.Series(values), errors="coerce", format="mixed")
     return float(parsed.notna().mean())
@@ -121,6 +134,7 @@ class _ColumnAccumulator:
         self.min_len: int | None = None
         self.max_len = 0
         self.all_boolean = True
+        self.all_whole = True
         self.probe: list[str] = []
 
     def add(self, raw: str, pattern: str) -> None:
@@ -134,6 +148,8 @@ class _ColumnAccumulator:
         self._track_pattern(raw, pattern)
         if _is_numeric(raw):
             self.numeric += 1
+        if self.all_whole and not _is_whole_number(raw):
+            self.all_whole = False
         if self.all_boolean and raw.strip().lower() not in BOOLEAN_TOKENS:
             self.all_boolean = False
         if len(self.probe) < DATETIME_PROBE:
@@ -204,6 +220,7 @@ class _ColumnAccumulator:
             min_length=self.min_len or 0,
             max_length=self.max_len,
             numeric_fraction=fraction,
+            whole_numbers=self.non_missing > 0 and self.all_whole,
         )
 
 
@@ -324,6 +341,7 @@ def _column_to_dict(c: ColumnProfile) -> dict[str, Any]:
         "min_length": c.min_length,
         "max_length": c.max_length,
         "numeric_fraction": c.numeric_fraction,
+        "whole_numbers": c.whole_numbers,
     }
 
 

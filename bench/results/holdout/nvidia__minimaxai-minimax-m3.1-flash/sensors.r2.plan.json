@@ -1,0 +1,123 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "sensor_id",
+      "dtype": "str"
+    },
+    {
+      "name": "site",
+      "dtype": "str"
+    },
+    {
+      "name": "temp_c",
+      "dtype": "str"
+    },
+    {
+      "name": "humidity_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "battery",
+      "dtype": "float64"
+    },
+    {
+      "name": "reading_time",
+      "dtype": "str"
+    },
+    {
+      "name": "status_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "site",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize case and whitespace variants of site names."
+    },
+    {
+      "id": "a2",
+      "column": "temp_c",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s*°?\\s*C\\s*$",
+        "replacement": ""
+      },
+      "reason": "Remove temperature unit symbols and spacing before numeric conversion."
+    },
+    {
+      "id": "a3",
+      "column": "temp_c",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned temperature measurements to numeric values."
+    },
+    {
+      "id": "a4",
+      "column": "temp_c",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing temperature measurements with the median."
+    },
+    {
+      "id": "a5",
+      "column": "humidity_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percent signs before numeric conversion."
+    },
+    {
+      "id": "a6",
+      "column": "humidity_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned humidity percentages to numeric values."
+    },
+    {
+      "id": "a7",
+      "column": "humidity_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Constrain humidity percentages to their valid range."
+    },
+    {
+      "id": "a8",
+      "column": "battery",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing battery measurements with the median."
+    },
+    {
+      "id": "a9",
+      "column": "reading_time",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d.%m.%Y %H:%M"
+      },
+      "reason": "Parse consistently formatted reading timestamps."
+    }
+  ]
+}

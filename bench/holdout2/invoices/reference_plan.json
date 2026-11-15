@@ -1,0 +1,116 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "reference/hand-written",
+    "prompt_version": "n/a"
+  },
+  "source_columns": [
+    {
+      "name": "invoice_no",
+      "dtype": "str"
+    },
+    {
+      "name": "customer",
+      "dtype": "str"
+    },
+    {
+      "name": "country",
+      "dtype": "str"
+    },
+    {
+      "name": "amount_usd",
+      "dtype": "str"
+    },
+    {
+      "name": "qty",
+      "dtype": "float64"
+    },
+    {
+      "name": "paid",
+      "dtype": "str"
+    },
+    {
+      "name": "due_date",
+      "dtype": "str"
+    },
+    {
+      "name": "memo",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "customer",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalise customer spelling."
+    },
+    {
+      "id": "a2",
+      "column": "country",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Country codes are upper case."
+    },
+    {
+      "id": "a3",
+      "column": "amount_usd",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "USD|[$,\\s]",
+        "replacement": ""
+      },
+      "reason": "Strip USD, $, separators."
+    },
+    {
+      "id": "a4",
+      "column": "amount_usd",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped; missing stays missing."
+    },
+    {
+      "id": "a5",
+      "column": "qty",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole numbers stored as floats."
+    },
+    {
+      "id": "a6",
+      "column": "qty",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantities with the median."
+    },
+    {
+      "id": "a7",
+      "column": "paid",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean spellings."
+    },
+    {
+      "id": "a8",
+      "column": "due_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%B %d, %Y"
+      },
+      "reason": "Long month-name dates."
+    }
+  ]
+}

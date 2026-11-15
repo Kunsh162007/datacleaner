@@ -1,0 +1,107 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalize department codes."
+    },
+    {
+      "id": "a2",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[€,\\s]|EUR",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols and separators."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned salary to numeric."
+    },
+    {
+      "id": "a4",
+      "column": "hours_per_week",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Values are whole numbers."
+    },
+    {
+      "id": "a5",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing hours with median."
+    },
+    {
+      "id": "a6",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean representations."
+    },
+    {
+      "id": "a7",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Parse dates."
+    }
+  ]
+}

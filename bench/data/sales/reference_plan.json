@@ -1,0 +1,126 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "reference/hand-written",
+    "prompt_version": "n/a"
+  },
+  "source_columns": [
+    {
+      "name": "order_id",
+      "dtype": "str"
+    },
+    {
+      "name": "city",
+      "dtype": "str"
+    },
+    {
+      "name": "amount",
+      "dtype": "str"
+    },
+    {
+      "name": "discount_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "quantity",
+      "dtype": "float64"
+    },
+    {
+      "name": "is_member",
+      "dtype": "str"
+    },
+    {
+      "name": "order_date",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "city",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalise city spelling."
+    },
+    {
+      "id": "a2",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[$,\\s]",
+        "replacement": ""
+      },
+      "reason": "Strip currency symbol, commas, spaces."
+    },
+    {
+      "id": "a3",
+      "column": "amount",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a4",
+      "column": "discount_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Strip percent sign."
+    },
+    {
+      "id": "a5",
+      "column": "discount_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a6",
+      "column": "quantity",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole numbers stored as floats."
+    },
+    {
+      "id": "a7",
+      "column": "quantity",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing counts with the median."
+    },
+    {
+      "id": "a8",
+      "column": "is_member",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean spellings."
+    },
+    {
+      "id": "a9",
+      "column": "order_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d/%m/%Y"
+      },
+      "reason": "Day-first dates."
+    }
+  ]
+}

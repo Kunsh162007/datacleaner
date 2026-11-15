@@ -1,0 +1,136 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "order_id",
+      "dtype": "str"
+    },
+    {
+      "name": "city",
+      "dtype": "str"
+    },
+    {
+      "name": "amount",
+      "dtype": "str"
+    },
+    {
+      "name": "discount_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "quantity",
+      "dtype": "float64"
+    },
+    {
+      "name": "is_member",
+      "dtype": "str"
+    },
+    {
+      "name": "order_date",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "city",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize city names."
+    },
+    {
+      "id": "a2",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[\\$,\\s]",
+        "replacement": ""
+      },
+      "reason": "Remove $ commas and spaces."
+    },
+    {
+      "id": "a3",
+      "column": "amount",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert amount to numeric."
+    },
+    {
+      "id": "a4",
+      "column": "discount_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove % sign."
+    },
+    {
+      "id": "a5",
+      "column": "discount_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert discount_pct to numeric."
+    },
+    {
+      "id": "a6",
+      "column": "discount_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Ensure percentages within 0-100."
+    },
+    {
+      "id": "a7",
+      "column": "quantity",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number quantities to integer."
+    },
+    {
+      "id": "a8",
+      "column": "quantity",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantities with median."
+    },
+    {
+      "id": "a9",
+      "column": "is_member",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Standardize boolean membership flag."
+    },
+    {
+      "id": "a10",
+      "column": "order_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d/%m/%Y"
+      },
+      "reason": "Parse order dates."
+    }
+  ]
+}

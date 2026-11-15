@@ -1,0 +1,17 @@
+{
+  "name": "invoices",
+  "columns": {
+    "invoice_no": "id",
+    "customer": "text-normalized",
+    "country": "text-normalized",
+    "amount_usd": "float",
+    "qty": "int",
+    "paid": "bool",
+    "due_date": "datetime",
+    "memo": "text-untouched"
+  },
+  "injection": {
+    "column": "memo",
+    "row": 17
+  }
+}

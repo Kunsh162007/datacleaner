@@ -1,0 +1,145 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "member_id",
+      "dtype": "str"
+    },
+    {
+      "name": "gym",
+      "dtype": "str"
+    },
+    {
+      "name": "heart_rate",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_lb",
+      "dtype": "str"
+    },
+    {
+      "name": "session_min",
+      "dtype": "float64"
+    },
+    {
+      "name": "vo2_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "checkin",
+      "dtype": "str"
+    },
+    {
+      "name": "coach_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "gym",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Gym names vary in case and surrounding whitespace."
+    },
+    {
+      "id": "a2",
+      "column": "heart_rate",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole-number measurement values should be integers before missing values are filled."
+    },
+    {
+      "id": "a3",
+      "column": "heart_rate",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Heart rate is a numeric measurement with missing values."
+    },
+    {
+      "id": "a4",
+      "column": "weight_lb",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s*(?:lbs?|LB|LBS)?\\s*$",
+        "replacement": ""
+      },
+      "reason": "Remove unit suffixes and surrounding whitespace from weight values."
+    },
+    {
+      "id": "a5",
+      "column": "weight_lb",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned weight text to numeric values."
+    },
+    {
+      "id": "a6",
+      "column": "weight_lb",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Weight is a numeric measurement with missing values."
+    },
+    {
+      "id": "a7",
+      "column": "session_min",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Session duration is represented by whole numbers."
+    },
+    {
+      "id": "a8",
+      "column": "vo2_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percent signs before numeric conversion."
+    },
+    {
+      "id": "a9",
+      "column": "vo2_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert percentage text to numeric values."
+    },
+    {
+      "id": "a10",
+      "column": "vo2_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "VO2 percentage has an obvious valid range of 0 to 100."
+    },
+    {
+      "id": "a11",
+      "column": "checkin",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y/%m/%d %H:%M"
+      },
+      "reason": "Parse check-in timestamps from their consistent date-time format."
+    }
+  ]
+}

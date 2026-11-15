@@ -1,0 +1,116 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "invoice_no",
+      "dtype": "str"
+    },
+    {
+      "name": "customer",
+      "dtype": "str"
+    },
+    {
+      "name": "country",
+      "dtype": "str"
+    },
+    {
+      "name": "amount_usd",
+      "dtype": "str"
+    },
+    {
+      "name": "qty",
+      "dtype": "float64"
+    },
+    {
+      "name": "paid",
+      "dtype": "str"
+    },
+    {
+      "name": "due_date",
+      "dtype": "str"
+    },
+    {
+      "name": "memo",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "customer",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Inconsistent casing and whitespace in customer names."
+    },
+    {
+      "id": "a2",
+      "column": "country",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Inconsistent casing and whitespace in country codes."
+    },
+    {
+      "id": "a3",
+      "column": "amount_usd",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[USD$, ]",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, 'USD', and commas from amount."
+    },
+    {
+      "id": "a4",
+      "column": "amount_usd",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast cleaned amount to float."
+    },
+    {
+      "id": "a5",
+      "column": "qty",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast whole numbers to integer type."
+    },
+    {
+      "id": "a6",
+      "column": "qty",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantity values with the median."
+    },
+    {
+      "id": "a7",
+      "column": "paid",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert boolean-like text to boolean type."
+    },
+    {
+      "id": "a8",
+      "column": "due_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%B %d, %Y"
+      },
+      "reason": "Parse date strings into datetime objects."
+    }
+  ]
+}

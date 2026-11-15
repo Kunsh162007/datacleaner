@@ -1,0 +1,158 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "reference/hand-written",
+    "prompt_version": "n/a"
+  },
+  "source_columns": [
+    {
+      "name": "patient_id",
+      "dtype": "str"
+    },
+    {
+      "name": "age",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_kg",
+      "dtype": "float64"
+    },
+    {
+      "name": "income",
+      "dtype": "str"
+    },
+    {
+      "name": "blood_type",
+      "dtype": "str"
+    },
+    {
+      "name": "smoker",
+      "dtype": "str"
+    },
+    {
+      "name": "visit_date",
+      "dtype": "str"
+    },
+    {
+      "name": "satisfaction",
+      "dtype": "int64"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "age",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole numbers stored as floats."
+    },
+    {
+      "id": "a2",
+      "column": "age",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing ages with the median."
+    },
+    {
+      "id": "a3",
+      "column": "weight_kg",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s",
+        "replacement": ""
+      },
+      "reason": "Strip spaces."
+    },
+    {
+      "id": "a4",
+      "column": "weight_kg",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a5",
+      "column": "weight_kg",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing weights with the median."
+    },
+    {
+      "id": "a6",
+      "column": "income",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Strip thousands separators."
+    },
+    {
+      "id": "a7",
+      "column": "income",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole currency amounts."
+    },
+    {
+      "id": "a8",
+      "column": "blood_type",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalise blood type spelling."
+    },
+    {
+      "id": "a9",
+      "column": "smoker",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean spellings."
+    },
+    {
+      "id": "a10",
+      "column": "visit_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d-%b-%Y"
+      },
+      "reason": "Consistent dates."
+    },
+    {
+      "id": "a11",
+      "column": "satisfaction",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Scores are whole numbers."
+    },
+    {
+      "id": "a12",
+      "column": "satisfaction",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 10
+      },
+      "reason": "Scale is 0 to 10."
+    }
+  ]
+}

@@ -65,3 +65,11 @@ def test_threshold_skipped_when_no_non_missing_values() -> None:
     df = pd.DataFrame({"v": [None, None]}, dtype="object")
     result = run_plan(df, [act("a1", "v", "cast", {"to": "int"})])
     assert result.steps[0].stats == {"coerced": 0}
+
+
+def test_datetime_parse_shares_coercion_threshold() -> None:
+    df = pd.DataFrame({"d": ["01/02/2024"] * 94 + ["junk"] * 6})
+    plan = [act("a1", "d", "datetime_parse", {"format": "%d/%m/%Y"})]
+    with pytest.raises(EngineError, match="datetime_parse would turn 6 of 100"):
+        run_plan(df, plan, max_coerce=0.05)
+    assert run_plan(df, plan, max_coerce=0.06).steps[0].stats == {"coerced": 6}

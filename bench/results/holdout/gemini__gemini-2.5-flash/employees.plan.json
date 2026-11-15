@@ -1,0 +1,126 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "full_name",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Clean inconsistent whitespace and apply title case to names."
+    },
+    {
+      "id": "a2",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Clean inconsistent whitespace and apply upper case to short codes."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[€, ]|EUR",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, commas, and text from salary values."
+    },
+    {
+      "id": "a4",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned salary strings to numeric type."
+    },
+    {
+      "id": "a5",
+      "column": "hours_per_week",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 60
+      },
+      "reason": "Clip hours per week to a reasonable range."
+    },
+    {
+      "id": "a6",
+      "column": "hours_per_week",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole numbers from float to integer type before filling missing values."
+    },
+    {
+      "id": "a7",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing hours per week with the median value."
+    },
+    {
+      "id": "a8",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean spellings to a standard boolean type."
+    },
+    {
+      "id": "a9",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Parse date strings into datetime objects using the specified format."
+    }
+  ]
+}

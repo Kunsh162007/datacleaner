@@ -8,6 +8,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from datacleaner.actions import ActionError
+from datacleaner.engine import DEFAULT_MAX_COERCE, EngineError, run_plan
+from datacleaner.io import read_table
 from datacleaner.llm import LLMClient
 from datacleaner.profiler import FileProfile, profile_file
 from datacleaner.prompt import (
@@ -60,11 +63,27 @@ def _build_plan(profile: FileProfile, model: str, actions: list[Any]) -> dict[st
     }
 
 
+def _dry_run_errors(df: Any, plan: Mapping[str, Any], max_coerce: float) -> list[str]:
+    """Run the plan locally (no LLM, nothing written) to catch failures the
+    static validator cannot see, e.g. a cast that would blank half a column."""
+    try:
+        run_plan(df, plan["actions"], max_coerce=max_coerce)
+    except (EngineError, ActionError) as exc:
+        return [f"dry run on the real file failed: {exc}"]
+    return []
+
+
 def suggest_plan(
-    path: str | Path, client: LLMClient, *, max_attempts: int = DEFAULT_MAX_ATTEMPTS
+    path: str | Path,
+    client: LLMClient,
+    *,
+    max_attempts: int = DEFAULT_MAX_ATTEMPTS,
+    max_coerce: float = DEFAULT_MAX_COERCE,
 ) -> SuggestResult:
     profile = profile_file(path)
+    df = read_table(path)
     names = [c.name for c in profile.columns]
+    dtypes = df.dtypes.astype(str).to_dict()
     schema = response_schema(names)
     base_prompt = build_user_prompt(profile)
     prompt, errors = base_prompt, ["no attempts made"]
@@ -73,10 +92,10 @@ def suggest_plan(
         actions, problem = _parse_actions(raw)
         if actions is not None:
             plan = _build_plan(profile, client.model, actions)
-            validation = validate_plan(plan, names)
-            if validation.is_valid:
+            validation = validate_plan(plan, names, dtypes)
+            errors = list(validation.errors) or _dry_run_errors(df, plan, max_coerce)
+            if not errors:
                 return SuggestResult(plan=plan, validation=validation, attempts=attempt)
-            errors = list(validation.errors)
         else:
             errors = [problem or "unparseable answer"]
         prompt = build_retry_prompt(base_prompt, errors)

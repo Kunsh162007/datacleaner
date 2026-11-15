@@ -1,0 +1,14 @@
+{
+  "name": "fitness",
+  "columns": {
+    "member_id": "id",
+    "gym": "text-normalized",
+    "heart_rate": "int",
+    "weight_lb": "float",
+    "session_min": "int",
+    "vo2_pct": "float",
+    "checkin": "datetime",
+    "coach_note": "text-untouched"
+  },
+  "injection": {}
+}

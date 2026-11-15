@@ -1,0 +1,19 @@
+{
+  "name": "products",
+  "columns": {
+    "sku": "id",
+    "name": "text-untouched",
+    "category": "text-normalized",
+    "price": "float",
+    "margin_pct": "float",
+    "stock": "int",
+    "rating": "float",
+    "in_stock": "bool",
+    "released": "datetime",
+    "description": "text-untouched"
+  },
+  "injection": {
+    "column": "description",
+    "row": 17
+  }
+}

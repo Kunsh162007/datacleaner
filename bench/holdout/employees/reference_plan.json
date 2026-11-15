@@ -1,0 +1,116 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "reference/hand-written",
+    "prompt_version": "n/a"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "full_name",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalise name spelling."
+    },
+    {
+      "id": "a2",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Department codes are upper case."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\u20ac|EUR|,|\\s",
+        "replacement": ""
+      },
+      "reason": "Strip euro sign, EUR, separators."
+    },
+    {
+      "id": "a4",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a5",
+      "column": "hours_per_week",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole numbers stored as floats."
+    },
+    {
+      "id": "a6",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing hours with the median."
+    },
+    {
+      "id": "a7",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean spellings."
+    },
+    {
+      "id": "a8",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Dotted year-first dates."
+    }
+  ]
+}

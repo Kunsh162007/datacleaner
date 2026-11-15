@@ -1,0 +1,201 @@
+member_id,gym,heart_rate,weight_lb,session_min,vo2_pct,checkin,coach_note
+M-0001,Peak Fitness,79,103.8,67,33.8,2024-05-05T14:06:00,improving stamina
+M-0002,Riverside Gym,54,192.3,12,64.2,2024-02-11T14:42:00,hydration reminder
+M-0003,Core Studio,113,122.8,115,40.3,2024-03-26T15:02:00,new personal best
+M-0004,Riverside Gym,71,149.2,57,100.0,2024-04-25T10:22:00,hydration reminder
+M-0005,Core Studio,60,169.1,61,24.4,2024-02-12T20:28:00,skipped warm-up
+M-0006,Peak Fitness,90,245.6,90,34.3,2024-04-14T11:25:00,improving stamina
+M-0007,Summit Club,106,106.9,25,57.4,2024-04-23T09:54:00,improving stamina
+M-0008,Summit Club,81,250.8,12,34.0,2024-01-19T15:50:00,skipped warm-up
+M-0009,Iron Works,75,185.5,72,85.0,2024-02-27T07:27:00,improving stamina
+M-0010,Summit Club,52,132.8,106,56.7,2024-03-24T08:18:00,improving stamina
+M-0011,Core Studio,83,104.8,30,65.3,2024-04-05T14:33:00,knee tape applied
+M-0012,Peak Fitness,93,154.8,120,92.8,2024-03-17T03:43:00,hydration reminder
+M-0013,Core Studio,72,141.5,77,31.9,2024-04-09T19:37:00,skipped warm-up
+M-0014,Riverside Gym,83,131.2,30,26.4,2024-03-09T13:53:00,hydration reminder
+M-0015,Iron Works,112,209.8,113,67.4,2024-04-20T20:25:00,new personal best
+M-0016,Iron Works,77,228.1,93,91.4,2024-01-08T14:52:00,new personal best
+M-0017,Core Studio,70,125.6,46,51.1,2024-03-21T11:04:00,new personal best
+M-0018,Summit Club,83,114.9,115,37.9,2024-02-02T06:08:00,knee tape applied
+M-0019,Core Studio,83,160.9,95,63.7,2024-05-01T19:25:00,new personal best
+M-0020,Peak Fitness,106,220.6,20,36.3,2024-05-02T18:15:00,skipped warm-up
+M-0021,Peak Fitness,91,218.1,67,61.8,2024-03-21T21:18:00,  keep this exact spacing  
+M-0022,Core Studio,85,191.7,87,89.5,2024-02-20T22:54:00,improving stamina
+M-0023,Peak Fitness,65,107.3,87,57.8,2024-01-27T18:59:00,improving stamina
+M-0024,Riverside Gym,90,125.2,30,58.1,2024-01-26T05:10:00,switch to interval plan
+M-0025,Riverside Gym,89,211.6,83,44.2,2024-05-03T01:34:00,hydration reminder
+M-0026,Riverside Gym,60,137.0,112,92.7,2024-04-20T15:41:00,new personal best
+M-0027,Core Studio,116,111.7,66,91.5,2024-03-30T06:44:00,improving stamina
+M-0028,Summit Club,119,226.9,31,90.0,2024-01-27T23:09:00,skipped warm-up
+M-0029,Iron Works,72,141.6,106,68.5,2024-02-28T00:04:00,new personal best
+M-0030,Peak Fitness,72,167.5,29,25.6,2024-02-28T02:38:00,knee tape applied
+M-0031,Peak Fitness,87,107.1,13,82.2,2024-03-11T16:42:00,knee tape applied
+M-0032,Summit Club,109,209.8,24,77.4,2024-02-23T18:00:00,switch to interval plan
+M-0033,Summit Club,56,207.0,96,49.4,2024-02-13T06:47:00,skipped warm-up
+M-0034,Riverside Gym,85,117.9,63,26.9,2024-01-11T19:02:00,knee tape applied
+M-0035,Peak Fitness,89,142.3,50,31.9,2024-04-15T11:41:00,skipped warm-up
+M-0036,Iron Works,112,110.3,96,21.8,2024-04-11T19:05:00,hydration reminder
+M-0037,Summit Club,93,162.5,41,65.1,2024-03-01T18:38:00,new personal best
+M-0038,Core Studio,82,231.9,45,75.5,2024-02-29T09:09:00,switch to interval plan
+M-0039,Peak Fitness,78,213.4,93,26.7,2024-05-05T03:56:00,new personal best
+M-0040,Core Studio,66,228.2,79,65.7,2024-03-03T10:37:00,skipped warm-up
+M-0041,Riverside Gym,87,213.1,82,28.2,2024-03-11T01:24:00,new personal best
+M-0042,Core Studio,107,134.3,58,33.6,2024-02-16T03:49:00,improving stamina
+M-0043,Summit Club,64,179.1,112,29.7,2024-04-10T02:40:00,new personal best
+M-0044,Peak Fitness,116,182.6,79,57.5,2024-01-25T10:50:00,knee tape applied
+M-0045,Riverside Gym,83,147.3,89,49.9,2024-03-04T14:46:00,switch to interval plan
+M-0046,Summit Club,86,179.1,21,64.9,2024-04-13T17:17:00,improving stamina
+M-0047,Riverside Gym,87,251.9,44,51.4,2024-04-23T06:59:00,skipped warm-up
+M-0048,Iron Works,60,240.2,77,79.0,2024-01-24T12:19:00,skipped warm-up
+M-0049,Summit Club,74,249.3,15,56.5,2024-04-24T20:16:00,new personal best
+M-0050,Riverside Gym,86,185.9,41,67.4,2024-02-19T04:49:00,switch to interval plan
+M-0051,Riverside Gym,51,249.1,42,51.0,2024-01-26T18:42:00,knee tape applied
+M-0052,Riverside Gym,116,234.3,119,45.5,2024-04-10T18:31:00,new personal best
+M-0053,Iron Works,77,160.4,92,61.1,2024-01-24T09:48:00,knee tape applied
+M-0054,Summit Club,68,234.8,32,91.4,2024-04-10T15:39:00,switch to interval plan
+M-0055,Iron Works,105,179.1,59,93.7,2024-02-11T20:13:00,skipped warm-up
+M-0056,Core Studio,50,158.1,57,71.2,2024-01-17T03:34:00,hydration reminder
+M-0057,Core Studio,61,146.7,10,71.2,2024-04-13T15:53:00,switch to interval plan
+M-0058,Core Studio,83,240.7,106,60.0,2024-04-20T22:02:00,improving stamina
+M-0059,Iron Works,93,103.0,99,39.9,2024-05-02T07:08:00,improving stamina
+M-0060,Summit Club,89,155.9,67,67.5,2024-01-31T17:03:00,knee tape applied
+M-0061,Peak Fitness,83,125.8,12,23.3,2024-02-19T15:15:00,hydration reminder
+M-0062,Iron Works,67,229.0,98,84.6,2024-01-09T16:21:00,knee tape applied
+M-0063,Iron Works,89,169.2,111,40.5,2024-02-02T01:47:00,hydration reminder
+M-0064,Core Studio,66,213.3,77,60.1,2024-01-22T11:28:00,switch to interval plan
+M-0065,Peak Fitness,57,181.1,73,62.8,2024-04-14T18:05:00,switch to interval plan
+M-0066,Iron Works,67,103.4,47,28.6,2024-02-14T19:09:00,new personal best
+M-0067,Iron Works,102,154.6,114,55.8,2024-02-20T00:13:00,switch to interval plan
+M-0068,Summit Club,65,134.8,59,66.9,2024-01-08T16:59:00,switch to interval plan
+M-0069,Summit Club,107,188.3,88,79.4,2024-02-18T00:43:00,knee tape applied
+M-0070,Peak Fitness,106,204.8,81,48.3,2024-05-05T01:10:00,switch to interval plan
+M-0071,Summit Club,59,225.8,40,80.4,2024-04-19T03:17:00,switch to interval plan
+M-0072,Riverside Gym,88,227.9,62,63.5,2024-04-11T00:28:00,new personal best
+M-0073,Peak Fitness,60,245.0,114,47.1,2024-02-11T08:45:00,switch to interval plan
+M-0074,Core Studio,111,224.1,95,40.6,2024-02-28T01:52:00,switch to interval plan
+M-0075,Summit Club,83,192.7,65,77.7,2024-05-02T10:59:00,improving stamina
+M-0076,Summit Club,102,213.6,93,23.3,2024-02-25T23:55:00,skipped warm-up
+M-0077,Core Studio,63,103.0,73,37.0,2024-04-26T14:35:00,new personal best
+M-0078,Core Studio,113,240.8,73,33.3,2024-03-19T08:58:00,improving stamina
+M-0079,Core Studio,105,218.3,120,73.5,2024-05-02T16:39:00,hydration reminder
+M-0080,Core Studio,112,105.6,49,89.5,2024-05-06T13:30:00,improving stamina
+M-0081,Core Studio,62,168.5,98,74.7,2024-01-13T00:06:00,hydration reminder
+M-0082,Riverside Gym,112,165.8,84,84.9,2024-01-26T17:38:00,skipped warm-up
+M-0083,Iron Works,109,142.2,57,84.6,2024-04-18T10:28:00,improving stamina
+M-0084,Core Studio,60,150.9,99,100.0,2024-01-15T04:46:00,improving stamina
+M-0085,Iron Works,120,179.1,85,91.6,2024-04-14T15:59:00,hydration reminder
+M-0086,Riverside Gym,48,137.1,68,72.4,2024-02-15T22:07:00,skipped warm-up
+M-0087,Iron Works,105,228.8,67,26.5,2024-01-10T14:51:00,new personal best
+M-0088,Iron Works,57,249.1,75,40.9,2024-02-08T17:26:00,hydration reminder
+M-0089,Core Studio,69,219.5,64,44.6,2024-04-20T15:16:00,knee tape applied
+M-0090,Summit Club,83,216.9,81,44.5,2024-01-19T12:08:00,knee tape applied
+M-0091,Riverside Gym,83,152.9,22,25.3,2024-01-22T22:41:00,improving stamina
+M-0092,Riverside Gym,83,194.4,50,82.9,2024-01-19T17:52:00,knee tape applied
+M-0093,Peak Fitness,96,132.5,29,61.6,2024-03-22T17:49:00,knee tape applied
+M-0094,Core Studio,93,219.3,48,36.1,2024-04-07T22:38:00,improving stamina
+M-0095,Core Studio,84,195.7,39,24.6,2024-03-13T08:56:00,new personal best
+M-0096,Riverside Gym,97,215.5,81,86.7,2024-01-14T02:12:00,switch to interval plan
+M-0097,Iron Works,83,209.0,118,75.0,2024-02-12T01:24:00,improving stamina
+M-0098,Peak Fitness,66,258.9,69,21.7,2024-02-05T21:53:00,new personal best
+M-0099,Riverside Gym,62,211.2,114,51.3,2024-02-11T01:10:00,knee tape applied
+M-0100,Peak Fitness,77,207.6,73,70.4,2024-04-30T02:46:00,switch to interval plan
+M-0101,Iron Works,101,219.0,87,49.6,2024-01-12T15:32:00,hydration reminder
+M-0102,Summit Club,97,182.6,20,23.8,2024-04-24T13:10:00,skipped warm-up
+M-0103,Summit Club,120,142.5,59,82.2,2024-02-09T07:19:00,hydration reminder
+M-0104,Peak Fitness,50,204.0,41,53.4,2024-02-25T07:42:00,knee tape applied
+M-0105,Peak Fitness,87,115.1,105,86.9,2024-04-10T05:32:00,knee tape applied
+M-0106,Iron Works,82,151.7,82,74.8,2024-04-26T06:24:00,skipped warm-up
+M-0107,Core Studio,75,128.3,76,27.3,2024-04-11T07:45:00,knee tape applied
+M-0108,Core Studio,114,207.7,103,88.8,2024-04-04T04:04:00,skipped warm-up
+M-0109,Riverside Gym,104,130.6,48,64.3,2024-04-20T11:32:00,hydration reminder
+M-0110,Peak Fitness,110,103.8,72,44.1,2024-02-11T04:06:00,skipped warm-up
+M-0111,Riverside Gym,107,253.6,110,53.0,2024-01-14T00:51:00,switch to interval plan
+M-0112,Core Studio,71,256.9,109,82.5,2024-03-10T18:09:00,knee tape applied
+M-0113,Summit Club,77,148.9,62,100.0,2024-03-24T02:51:00,improving stamina
+M-0114,Core Studio,74,185.0,46,45.8,2024-02-18T20:55:00,new personal best
+M-0115,Iron Works,67,256.2,28,51.6,2024-02-23T02:44:00,skipped warm-up
+M-0116,Peak Fitness,67,240.3,58,24.6,2024-04-22T11:17:00,improving stamina
+M-0117,Peak Fitness,83,127.9,22,28.6,2024-04-16T00:59:00,skipped warm-up
+M-0118,Summit Club,103,143.1,65,79.5,2024-01-16T23:50:00,improving stamina
+M-0119,Riverside Gym,52,221.8,45,28.7,2024-03-24T09:19:00,hydration reminder
+M-0120,Iron Works,114,125.4,46,69.8,2024-04-15T07:48:00,switch to interval plan
+M-0121,Core Studio,119,109.8,120,82.4,2024-01-24T20:36:00,hydration reminder
+M-0122,Core Studio,77,179.1,19,78.4,2024-03-03T02:19:00,new personal best
+M-0123,Core Studio,91,112.7,59,60.3,2024-04-23T02:54:00,knee tape applied
+M-0124,Summit Club,107,241.2,89,62.7,2024-02-09T13:58:00,skipped warm-up
+M-0125,Peak Fitness,83,179.1,112,65.7,2024-03-20T07:57:00,switch to interval plan
+M-0126,Iron Works,104,243.4,37,76.2,2024-02-08T17:00:00,knee tape applied
+M-0127,Peak Fitness,74,177.1,44,74.1,2024-01-18T12:28:00,skipped warm-up
+M-0128,Summit Club,69,249.1,72,93.1,2024-01-26T00:56:00,hydration reminder
+M-0129,Core Studio,91,242.0,84,28.1,2024-02-17T21:28:00,hydration reminder
+M-0130,Riverside Gym,77,228.5,94,44.3,2024-03-18T04:01:00,hydration reminder
+M-0131,Riverside Gym,49,195.7,46,29.9,2024-05-05T11:42:00,hydration reminder
+M-0132,Core Studio,100,156.2,98,82.9,2024-03-21T11:29:00,skipped warm-up
+M-0133,Summit Club,84,242.3,116,55.9,2024-01-19T14:51:00,improving stamina
+M-0134,Iron Works,67,164.8,41,31.5,2024-04-17T00:01:00,new personal best
+M-0135,Summit Club,106,174.2,85,71.0,2024-02-23T13:39:00,improving stamina
+M-0136,Peak Fitness,52,239.1,73,72.7,2024-03-20T14:36:00,improving stamina
+M-0137,Riverside Gym,70,227.5,75,67.1,2024-03-10T16:41:00,new personal best
+M-0138,Core Studio,119,235.7,70,28.3,2024-02-16T16:39:00,knee tape applied
+M-0139,Iron Works,105,247.7,110,38.7,2024-05-02T10:23:00,skipped warm-up
+M-0140,Riverside Gym,112,228.3,101,93.6,2024-04-16T18:58:00,knee tape applied
+M-0141,Riverside Gym,118,142.8,70,32.5,2024-02-19T02:05:00,hydration reminder
+M-0142,Peak Fitness,74,179.1,100,41.7,2024-01-23T01:44:00,new personal best
+M-0143,Core Studio,91,236.2,76,79.8,2024-04-26T05:01:00,improving stamina
+M-0144,Core Studio,82,127.1,51,23.4,2024-01-14T18:56:00,hydration reminder
+M-0145,Core Studio,93,195.9,40,44.3,2024-01-20T11:00:00,switch to interval plan
+M-0146,Core Studio,110,121.4,67,49.8,2024-04-29T13:29:00,improving stamina
+M-0147,Summit Club,74,147.3,41,63.1,2024-03-16T20:02:00,improving stamina
+M-0148,Summit Club,74,165.5,14,69.8,2024-03-05T15:35:00,knee tape applied
+M-0149,Iron Works,60,187.9,45,67.2,2024-03-21T04:36:00,switch to interval plan
+M-0150,Riverside Gym,69,241.8,22,83.6,2024-04-08T15:51:00,skipped warm-up
+M-0151,Riverside Gym,86,112.9,91,30.6,2024-01-27T19:28:00,new personal best
+M-0152,Peak Fitness,110,168.1,119,29.9,2024-03-23T14:08:00,improving stamina
+M-0153,Summit Club,88,145.0,87,42.8,2024-04-06T16:25:00,switch to interval plan
+M-0154,Summit Club,55,107.5,66,87.6,2024-02-14T03:16:00,hydration reminder
+M-0155,Iron Works,117,175.9,15,84.7,2024-03-26T15:55:00,new personal best
+M-0156,Riverside Gym,108,217.7,30,29.0,2024-02-20T21:17:00,new personal best
+M-0157,Iron Works,63,100.2,111,42.5,2024-03-04T21:29:00,knee tape applied
+M-0158,Summit Club,69,179.1,47,65.3,2024-01-08T06:02:00,hydration reminder
+M-0159,Summit Club,101,234.0,76,42.8,2024-03-13T07:50:00,hydration reminder
+M-0160,Iron Works,70,118.9,64,62.2,2024-02-02T18:55:00,hydration reminder
+M-0161,Riverside Gym,100,241.3,101,38.9,2024-03-15T00:23:00,hydration reminder
+M-0162,Riverside Gym,94,162.9,37,71.4,2024-03-24T04:11:00,improving stamina
+M-0163,Riverside Gym,59,130.1,28,55.8,2024-03-08T06:38:00,switch to interval plan
+M-0164,Riverside Gym,85,129.1,111,78.8,2024-02-26T08:45:00,knee tape applied
+M-0165,Peak Fitness,88,248.5,35,29.1,2024-04-15T21:25:00,new personal best
+M-0166,Riverside Gym,114,184.8,56,50.9,2024-03-26T03:08:00,knee tape applied
+M-0167,Riverside Gym,57,258.2,55,25.7,2024-03-21T07:50:00,switch to interval plan
+M-0168,Peak Fitness,55,148.0,107,83.6,2024-04-13T23:13:00,new personal best
+M-0169,Summit Club,82,108.7,60,54.0,2024-04-17T11:38:00,new personal best
+M-0170,Riverside Gym,59,213.7,52,79.1,2024-03-25T15:10:00,improving stamina
+M-0171,Peak Fitness,59,187.0,70,71.8,2024-02-08T01:57:00,skipped warm-up
+M-0172,Core Studio,69,182.5,22,60.7,2024-03-14T16:05:00,hydration reminder
+M-0173,Summit Club,83,161.7,22,47.3,2024-03-30T10:26:00,improving stamina
+M-0174,Riverside Gym,84,125.7,50,76.9,2024-02-25T08:10:00,skipped warm-up
+M-0175,Core Studio,88,133.7,70,44.6,2024-03-31T11:48:00,knee tape applied
+M-0176,Riverside Gym,55,241.4,88,53.3,2024-01-24T19:03:00,skipped warm-up
+M-0177,Core Studio,75,238.4,22,100.0,2024-04-23T20:30:00,improving stamina
+M-0178,Riverside Gym,88,179.1,25,32.4,2024-02-09T07:47:00,knee tape applied
+M-0179,Peak Fitness,73,153.3,96,56.4,2024-02-18T19:54:00,switch to interval plan
+M-0180,Peak Fitness,74,212.1,64,77.5,2024-03-08T09:14:00,hydration reminder
+M-0181,Core Studio,59,237.0,31,66.7,2024-04-23T12:36:00,switch to interval plan
+M-0182,Riverside Gym,74,159.0,104,70.3,2024-04-21T12:01:00,knee tape applied
+M-0183,Iron Works,60,161.9,87,93.4,2024-04-23T14:09:00,improving stamina
+M-0184,Peak Fitness,82,185.6,108,29.8,2024-02-22T19:55:00,skipped warm-up
+M-0185,Riverside Gym,78,163.2,15,36.3,2024-02-07T15:51:00,switch to interval plan
+M-0186,Iron Works,112,222.1,78,100.0,2024-03-02T07:04:00,new personal best
+M-0187,Core Studio,79,130.2,62,50.0,2024-05-05T03:53:00,hydration reminder
+M-0188,Riverside Gym,83,195.9,87,73.4,2024-02-01T06:27:00,switch to interval plan
+M-0189,Iron Works,92,103.2,117,51.9,2024-03-08T04:15:00,hydration reminder
+M-0190,Core Studio,60,139.8,18,71.1,2024-03-28T02:36:00,improving stamina
+M-0191,Summit Club,52,112.9,103,21.4,2024-04-22T02:09:00,switch to interval plan
+M-0192,Peak Fitness,68,143.7,112,88.0,2024-04-28T00:17:00,improving stamina
+M-0193,Peak Fitness,83,179.1,14,69.7,2024-04-25T11:00:00,skipped warm-up
+M-0194,Summit Club,83,108.4,103,57.6,2024-04-27T18:58:00,new personal best
+M-0195,Iron Works,120,158.6,93,87.8,2024-01-14T08:12:00,skipped warm-up
+M-0196,Iron Works,60,110.2,108,22.5,2024-03-08T10:20:00,improving stamina
+M-0197,Summit Club,111,141.5,59,62.5,2024-04-04T02:49:00,hydration reminder
+M-0198,Peak Fitness,104,247.9,70,32.6,2024-03-17T14:04:00,improving stamina
+M-0199,Riverside Gym,70,163.3,85,62.5,2024-03-26T05:40:00,hydration reminder
+M-0200,Summit Club,90,208.7,30,20.4,2024-02-13T16:53:00,hydration reminder

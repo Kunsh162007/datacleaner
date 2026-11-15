@@ -92,10 +92,10 @@ def _fill_value(series: pd.Series, strategy: str, params: Mapping[str, Any]) -> 
     present = series.dropna()
     if present.empty:
         raise ActionError(f"fillna '{strategy}': column has no non-missing values")
-    if strategy == "mean":
-        return present.mean()
-    if strategy == "median":
-        return present.median()
+    if strategy in {"mean", "median"}:
+        stat = present.mean() if strategy == "mean" else present.median()
+        # An integer column stays integer: round half-to-even before filling.
+        return round(float(stat)) if pd.api.types.is_integer_dtype(series) else stat
     return sorted(present.mode())[0]
 
 
@@ -132,6 +132,63 @@ def regex_replace(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> A
     return ActionOutcome(out, {"changed": changed})
 
 
+_CASE_FUNCS: Mapping[str, Callable[[str], str]] = MappingProxyType(
+    {"none": str, "lower": str.lower, "upper": str.upper, "title": str.title}
+)
+
+
+def _text_series(values: list[Any], like: pd.Series) -> pd.Series:
+    dtype = like.dtype if str(like.dtype) == "string" else "object"
+    return pd.Series(values, index=like.index, dtype=dtype)
+
+
+def strip(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> ActionOutcome:
+    """Trim, collapse inner whitespace runs to one space, then apply a case rule."""
+    _require_column(df, column)
+    case = params.get("case")
+    case_func = _CASE_FUNCS.get(case)  # type: ignore[arg-type]
+    if case_func is None:
+        raise ActionError(f"unsupported strip case '{case}'")
+    changed = 0
+    values: list[Any] = []
+    for value in df[column].astype("object"):
+        if isinstance(value, str):
+            new = case_func(" ".join(value.split()))
+            changed += int(new != value)
+            values.append(new)
+        else:
+            values.append(value)
+    out = df.copy()
+    out[column] = _text_series(values, df[column])
+    return ActionOutcome(out, {"changed": changed})
+
+
+def datetime_parse(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> ActionOutcome:
+    """Parse text with an explicit strftime format; unparseable values become NaT."""
+    _require_column(df, column)
+    fmt = params.get("format")
+    if not isinstance(fmt, str) or not fmt:
+        raise ActionError("datetime_parse requires a 'format' string")
+    out = df.copy()
+    text = df[column].astype("string")
+    out[column] = pd.to_datetime(text, errors="coerce", format=fmt)
+    return ActionOutcome(out, {"coerced": _coerced_count(df[column], out[column])})
+
+
+def clip(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> ActionOutcome:
+    """Bound numeric values to [min, max]; either bound may be omitted."""
+    _require_column(df, column)
+    series = df[column]
+    if pd.api.types.is_bool_dtype(series) or not pd.api.types.is_numeric_dtype(series):
+        raise ActionError(f"clip needs a numeric column, got dtype {series.dtype}")
+    lower, upper = params.get("min"), params.get("max")
+    if lower is None and upper is None:
+        raise ActionError("clip requires 'min' and/or 'max'")
+    out = df.copy()
+    out[column] = series.clip(lower=lower, upper=upper)
+    return ActionOutcome(out, {"clipped": int((series.notna() & series.ne(out[column])).fillna(False).sum())})
+
+
 def drop(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> ActionOutcome:
     _require_column(df, column)
     return ActionOutcome(df.drop(columns=[column]), {"dropped_columns": 1})
@@ -139,6 +196,14 @@ def drop(df: pd.DataFrame, column: str, params: Mapping[str, Any]) -> ActionOutc
 
 DISPATCH: Mapping[str, Callable[[pd.DataFrame, str, Mapping[str, Any]], ActionOutcome]] = (
     MappingProxyType(
-        {"cast": cast, "fillna": fillna, "regex_replace": regex_replace, "drop": drop}
+        {
+            "cast": cast,
+            "fillna": fillna,
+            "regex_replace": regex_replace,
+            "drop": drop,
+            "strip": strip,
+            "datetime_parse": datetime_parse,
+            "clip": clip,
+        }
     )
 )

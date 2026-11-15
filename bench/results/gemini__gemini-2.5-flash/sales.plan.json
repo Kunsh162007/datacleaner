@@ -1,0 +1,156 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "order_id",
+      "dtype": "str"
+    },
+    {
+      "name": "city",
+      "dtype": "str"
+    },
+    {
+      "name": "amount",
+      "dtype": "str"
+    },
+    {
+      "name": "discount_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "quantity",
+      "dtype": "float64"
+    },
+    {
+      "name": "is_member",
+      "dtype": "str"
+    },
+    {
+      "name": "order_date",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "city",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Clean inconsistent casing and whitespace in categorical text."
+    },
+    {
+      "id": "a2",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\$",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbol from numeric text."
+    },
+    {
+      "id": "a3",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove thousands separator from numeric text."
+    },
+    {
+      "id": "a4",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "^\\s+|\\s+$",
+        "replacement": ""
+      },
+      "reason": "Remove leading and trailing spaces from numeric text."
+    },
+    {
+      "id": "a5",
+      "column": "amount",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned numeric text to float."
+    },
+    {
+      "id": "a6",
+      "column": "discount_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percentage symbol from numeric text."
+    },
+    {
+      "id": "a7",
+      "column": "discount_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned numeric text to float."
+    },
+    {
+      "id": "a8",
+      "column": "discount_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Clip percentage values to a valid range."
+    },
+    {
+      "id": "a9",
+      "column": "quantity",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert numeric values to integers as they represent whole counts."
+    },
+    {
+      "id": "a10",
+      "column": "quantity",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing values in a count column with the median."
+    },
+    {
+      "id": "a11",
+      "column": "is_member",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean spellings to a boolean type."
+    },
+    {
+      "id": "a12",
+      "column": "order_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d/%m/%Y"
+      },
+      "reason": "Parse date strings into a consistent datetime format."
+    }
+  ]
+}

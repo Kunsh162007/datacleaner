@@ -22,7 +22,8 @@ from datacleaner.report import (
     drop_row_id,
     render_audit_markdown,
 )
-from datacleaner.llm import DEFAULT_MODEL, LLMClient, LLMError, client_from_env
+from datacleaner.llm import LLMClient, LLMError
+from datacleaner.providers import AUTO_PROVIDER, DEFAULT_PROVIDER, PROVIDERS, client_for
 from datacleaner.suggest import SuggestError, review_interactively, suggest_plan
 from datacleaner.validator import validate_plan
 
@@ -55,7 +56,9 @@ def _build_parser() -> argparse.ArgumentParser:
     suggest_p = sub.add_parser("suggest", help="ask an LLM to draft a cleaning plan")
     suggest_p.add_argument("--in", dest="input", required=True, type=Path)
     suggest_p.add_argument("--out", type=Path, default=Path("cleaning_plan.json"))
-    suggest_p.add_argument("--model", default=DEFAULT_MODEL)
+    suggest_p.add_argument("--provider", choices=[*sorted(PROVIDERS), AUTO_PROVIDER],
+                           default=DEFAULT_PROVIDER)
+    suggest_p.add_argument("--model", default=None, help="default: the provider's own default")
     suggest_p.add_argument("--interactive", action="store_true")
     suggest_p.add_argument("--force", action="store_true")
     return parser
@@ -101,7 +104,7 @@ def _text_writer(text: str) -> Callable[[Path], None]:
 def _apply(args: argparse.Namespace) -> None:
     df = _read_input(args.input)
     plan = _load_plan(args.plan)
-    validation = validate_plan(plan, list(df.columns))
+    validation = validate_plan(plan, list(df.columns), df.dtypes.astype(str).to_dict())
     if not validation.is_valid:
         raise CliError("plan is invalid:\n" + "\n".join(f"  - {e}" for e in validation.errors))
     original = add_row_id(df)
@@ -146,13 +149,13 @@ def _write_plan(path: Path, plan: Any) -> None:
 
 def _suggest(
     args: argparse.Namespace,
-    client_factory: Callable[[str], LLMClient],
+    client_factory: Callable[[str, str | None], LLMClient],
     ask: Callable[[str], str],
 ) -> None:
     if args.out.exists() and not args.force:
         raise CliError(f"'{args.out}' already exists; use --force to overwrite")
     try:
-        client = client_factory(args.model)
+        client = client_factory(args.provider, args.model)
         result = suggest_plan(args.input, client)
     except (LLMError, SuggestError) as exc:
         raise CliError(str(exc)) from exc
@@ -173,7 +176,7 @@ def _suggest(
 def main(
     argv: Sequence[str] | None = None,
     *,
-    client_factory: Callable[[str], LLMClient] = client_from_env,
+    client_factory: Callable[[str, str | None], LLMClient] = client_for,
     ask: Callable[[str], str] = input,
 ) -> int:
     try:

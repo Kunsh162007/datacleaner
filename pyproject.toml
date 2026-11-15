@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "LLM-assisted, validated, deterministic data cleaning CLI"
 requires-python = ">=3.11"
 dependencies = [
+    "openai>=1.40",
     "jsonschema>=4.20",
     "google-re2>=1.1",
     "pandas>=2.2",
@@ -31,3 +32,4 @@ datacleaner = ["plan.schema.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,154 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "member_id",
+      "dtype": "str"
+    },
+    {
+      "name": "gym",
+      "dtype": "str"
+    },
+    {
+      "name": "heart_rate",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_lb",
+      "dtype": "str"
+    },
+    {
+      "name": "session_min",
+      "dtype": "float64"
+    },
+    {
+      "name": "vo2_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "checkin",
+      "dtype": "str"
+    },
+    {
+      "name": "coach_note",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "gym",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize gym names case and whitespace."
+    },
+    {
+      "id": "a2",
+      "column": "heart_rate",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Whole numbers heart rate should be integer."
+    },
+    {
+      "id": "a3",
+      "column": "heart_rate",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing heart rate measurements with median."
+    },
+    {
+      "id": "a4",
+      "column": "weight_lb",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[^0-9\\.]",
+        "replacement": ""
+      },
+      "reason": "Remove units and spaces from weight strings."
+    },
+    {
+      "id": "a5",
+      "column": "weight_lb",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned weight to numeric."
+    },
+    {
+      "id": "a6",
+      "column": "weight_lb",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing weight values with median."
+    },
+    {
+      "id": "a7",
+      "column": "session_min",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Session minutes are whole numbers."
+    },
+    {
+      "id": "a8",
+      "column": "vo2_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Strip % sign from VO2 values."
+    },
+    {
+      "id": "a9",
+      "column": "vo2_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert VO2 percentages to numeric."
+    },
+    {
+      "id": "a10",
+      "column": "vo2_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Clamp VO2 percentages to realistic bounds."
+    },
+    {
+      "id": "a11",
+      "column": "checkin",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y/%m/%d %H:%M"
+      },
+      "reason": "Parse checkin timestamps."
+    },
+    {
+      "id": "a12",
+      "column": "coach_note",
+      "action": "strip",
+      "params": {
+        "case": "none"
+      },
+      "reason": "Remove extra whitespace from notes."
+    }
+  ]
+}

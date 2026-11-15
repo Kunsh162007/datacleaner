@@ -1,0 +1,136 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "full_name",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize whitespace and title case in employee names."
+    },
+    {
+      "id": "a2",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalize whitespace and uppercase short department codes."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "€",
+        "replacement": ""
+      },
+      "reason": "Remove euro symbols before numeric conversion."
+    },
+    {
+      "id": "a4",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "EUR",
+        "replacement": ""
+      },
+      "reason": "Remove currency suffixes before numeric conversion."
+    },
+    {
+      "id": "a5",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove thousands separators before numeric conversion."
+    },
+    {
+      "id": "a6",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the cleaned numeric salary text to floats."
+    },
+    {
+      "id": "a7",
+      "column": "hours_per_week",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number weekly hours to integers before filling missing values."
+    },
+    {
+      "id": "a8",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing weekly-hour measurements with the median."
+    },
+    {
+      "id": "a9",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean spellings to booleans."
+    },
+    {
+      "id": "a10",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Parse consistently formatted dotted dates."
+    }
+  ]
+}

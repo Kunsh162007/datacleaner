@@ -1,0 +1,158 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "patient_id",
+      "dtype": "str"
+    },
+    {
+      "name": "age",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_kg",
+      "dtype": "float64"
+    },
+    {
+      "name": "income",
+      "dtype": "str"
+    },
+    {
+      "name": "blood_type",
+      "dtype": "str"
+    },
+    {
+      "name": "smoker",
+      "dtype": "str"
+    },
+    {
+      "name": "visit_date",
+      "dtype": "str"
+    },
+    {
+      "name": "satisfaction",
+      "dtype": "int64"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "age",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Age is a whole-number measurement and must be cast before filling missing values."
+    },
+    {
+      "id": "a2",
+      "column": "age",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Age is a numeric measurement with missing values."
+    },
+    {
+      "id": "a3",
+      "column": "weight_kg",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "^\\s+|\\s+$",
+        "replacement": ""
+      },
+      "reason": "Remove surrounding whitespace from numeric weight values before casting."
+    },
+    {
+      "id": "a4",
+      "column": "weight_kg",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Weight is numeric text with whitespace formatting."
+    },
+    {
+      "id": "a5",
+      "column": "weight_kg",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Weight is a numeric measurement with missing values."
+    },
+    {
+      "id": "a6",
+      "column": "income",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove thousands separators from income values before casting."
+    },
+    {
+      "id": "a7",
+      "column": "income",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Income is numeric text after removing formatting noise."
+    },
+    {
+      "id": "a8",
+      "column": "blood_type",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalize whitespace and case for short blood-type codes."
+    },
+    {
+      "id": "a9",
+      "column": "smoker",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Values use mixed boolean spellings such as yes, no, true, false, and 0."
+    },
+    {
+      "id": "a10",
+      "column": "visit_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d-%b-%Y"
+      },
+      "reason": "Visit dates consistently use the day-month-name-year format."
+    },
+    {
+      "id": "a11",
+      "column": "satisfaction",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Satisfaction is already an integer-valued score."
+    },
+    {
+      "id": "a12",
+      "column": "satisfaction",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 10
+      },
+      "reason": "Satisfaction is a score with an obvious range of 0 to 10."
+    }
+  ]
+}

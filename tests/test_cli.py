@@ -173,7 +173,7 @@ def _suggest(tmp_path, client, *extra, ask=input):
         shutil.copy(MESSY, src)
     out = tmp_path / "plan.json"
     argv = ["suggest", "--in", str(src), "--out", str(out), *extra]
-    code = main(argv, client_factory=lambda model: client, ask=ask)
+    code = main(argv, client_factory=lambda provider, model: client, ask=ask)
     return code, src, out
 
 
@@ -212,7 +212,7 @@ def test_suggest_invalid_answers_write_nothing(tmp_path, capsys) -> None:
 
 
 def test_suggest_client_factory_failure(tmp_path, capsys) -> None:
-    def factory(model):
+    def factory(provider, model):
         raise LLMError("GEMINI_API_KEY is not set")
 
     shutil.copy(MESSY, tmp_path / "messy.csv")
@@ -223,7 +223,7 @@ def test_suggest_client_factory_failure(tmp_path, capsys) -> None:
 
 def test_suggest_missing_input(tmp_path, capsys) -> None:
     code = main(["suggest", "--in", str(tmp_path / "nope.csv"), "--out",
-                 str(tmp_path / "p.json")], client_factory=lambda m: FakeClient())
+                 str(tmp_path / "p.json")], client_factory=lambda p, m: FakeClient())
     assert code == 1
 
 
@@ -234,3 +234,25 @@ def test_suggest_interactive_rejection(tmp_path, capsys) -> None:
     assert code == 0
     ids = [a["id"] for a in json.loads(out.read_text(encoding="utf-8"))["actions"]]
     assert ids == ["a1", "a3"]
+
+
+def test_apply_new_actions_end_to_end_with_dates(tmp_path) -> None:
+    df = pd.DataFrame(
+        {"city": ["  new  york", "NEW YORK"], "when": ["05/03/2024", "31/12/2023"], "n": [-5, 500]}
+    )
+    src = tmp_path / "d.csv"
+    df.to_csv(src, index=False)
+    actions = [
+        act("a1", "city", "strip", {"case": "title"}),
+        act("a2", "when", "datetime_parse", {"format": "%d/%m/%Y"}),
+        act("a3", "n", "clip", {"min": 0, "max": 100}),
+    ]
+    plan = tmp_path / "p.json"
+    plan.write_text(json.dumps(make_plan(actions, ["city", "when", "n"])), encoding="utf-8")
+    out = tmp_path / "out"
+    assert run(src, plan, out) == 0
+    cleaned = (out / "cleaned_d.csv").read_text(encoding="utf-8").splitlines()
+    assert cleaned == ["city,when,n", "New York,2024-03-05,0", "New York,2023-12-31,100"]
+    audit = json.loads((out / "audit_report.json").read_text(encoding="utf-8"))
+    assert audit["destructive_actions_run"] == []
+    assert (out / "diff_report.txt").read_text(encoding="utf-8")

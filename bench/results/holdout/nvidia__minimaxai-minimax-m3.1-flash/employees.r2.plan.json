@@ -1,0 +1,116 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "emp_code",
+      "dtype": "str"
+    },
+    {
+      "name": "full_name",
+      "dtype": "str"
+    },
+    {
+      "name": "dept",
+      "dtype": "str"
+    },
+    {
+      "name": "salary_eur",
+      "dtype": "str"
+    },
+    {
+      "name": "hours_per_week",
+      "dtype": "float64"
+    },
+    {
+      "name": "remote",
+      "dtype": "str"
+    },
+    {
+      "name": "start_date",
+      "dtype": "str"
+    },
+    {
+      "name": "bio",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "full_name",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize surrounding and repeated whitespace and standardize name capitalization."
+    },
+    {
+      "id": "a2",
+      "column": "dept",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalize whitespace and case variants in short department codes."
+    },
+    {
+      "id": "a3",
+      "column": "salary_eur",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "€|EUR|,",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, currency suffixes, and thousands separators before numeric conversion."
+    },
+    {
+      "id": "a4",
+      "column": "salary_eur",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the cleaned numeric salary text to a numeric type."
+    },
+    {
+      "id": "a5",
+      "column": "hours_per_week",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "All observed weekly-hour values are whole numbers."
+    },
+    {
+      "id": "a6",
+      "column": "hours_per_week",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing values in this numeric measurement column using the median."
+    },
+    {
+      "id": "a7",
+      "column": "remote",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "All distinct values are boolean-like spellings or 1/0 indicators."
+    },
+    {
+      "id": "a8",
+      "column": "start_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y.%m.%d"
+      },
+      "reason": "Parse dates consistently formatted as year.month.day."
+    }
+  ]
+}

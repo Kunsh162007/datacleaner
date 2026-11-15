@@ -1,0 +1,163 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "sku",
+      "dtype": "str"
+    },
+    {
+      "name": "name",
+      "dtype": "str"
+    },
+    {
+      "name": "category",
+      "dtype": "str"
+    },
+    {
+      "name": "price",
+      "dtype": "str"
+    },
+    {
+      "name": "margin_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "stock",
+      "dtype": "float64"
+    },
+    {
+      "name": "rating",
+      "dtype": "float64"
+    },
+    {
+      "name": "in_stock",
+      "dtype": "str"
+    },
+    {
+      "name": "released",
+      "dtype": "str"
+    },
+    {
+      "name": "description",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "category",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Inconsistent text categories need stripping and title casing."
+    },
+    {
+      "id": "a2",
+      "column": "price",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[$, ]",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, commas, and spaces from price."
+    },
+    {
+      "id": "a3",
+      "column": "price",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast cleaned price to float."
+    },
+    {
+      "id": "a4",
+      "column": "margin_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percentage symbol from margin percentage."
+    },
+    {
+      "id": "a5",
+      "column": "margin_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast cleaned margin percentage to float."
+    },
+    {
+      "id": "a6",
+      "column": "margin_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Clip margin percentage to a valid range of 0 to 100."
+    },
+    {
+      "id": "a7",
+      "column": "stock",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast stock count to integer as all values are whole numbers."
+    },
+    {
+      "id": "a8",
+      "column": "stock",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing stock counts with the median value."
+    },
+    {
+      "id": "a9",
+      "column": "rating",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing ratings with the median value."
+    },
+    {
+      "id": "a10",
+      "column": "rating",
+      "action": "clip",
+      "params": {
+        "min": 1,
+        "max": 5
+      },
+      "reason": "Clip rating to a common range of 1 to 5."
+    },
+    {
+      "id": "a11",
+      "column": "in_stock",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Cast mixed boolean spellings to boolean type."
+    },
+    {
+      "id": "a12",
+      "column": "released",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%m/%d/%Y"
+      },
+      "reason": "Parse date strings into datetime objects."
+    }
+  ]
+}

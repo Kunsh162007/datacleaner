@@ -1,0 +1,136 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "order_id",
+      "dtype": "str"
+    },
+    {
+      "name": "city",
+      "dtype": "str"
+    },
+    {
+      "name": "amount",
+      "dtype": "str"
+    },
+    {
+      "name": "discount_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "quantity",
+      "dtype": "float64"
+    },
+    {
+      "name": "is_member",
+      "dtype": "str"
+    },
+    {
+      "name": "order_date",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "city",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize inconsistent whitespace and case in city names."
+    },
+    {
+      "id": "a2",
+      "column": "amount",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "[$,\\s]",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, thousands separators, and surrounding whitespace before numeric conversion."
+    },
+    {
+      "id": "a3",
+      "column": "amount",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the fully numeric amount text to floats."
+    },
+    {
+      "id": "a4",
+      "column": "discount_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percent signs before numeric conversion."
+    },
+    {
+      "id": "a5",
+      "column": "discount_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert percentage text to numeric values."
+    },
+    {
+      "id": "a6",
+      "column": "discount_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Constrain percentage values to the valid 0–100 range."
+    },
+    {
+      "id": "a7",
+      "column": "quantity",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number quantities to integers before handling missing values."
+    },
+    {
+      "id": "a8",
+      "column": "quantity",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantity measurements with the median."
+    },
+    {
+      "id": "a9",
+      "column": "is_member",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Normalize mixed boolean spellings and numeric flags to booleans."
+    },
+    {
+      "id": "a10",
+      "column": "order_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d/%m/%Y"
+      },
+      "reason": "Parse dates consistently formatted as day, month, and year."
+    }
+  ]
+}

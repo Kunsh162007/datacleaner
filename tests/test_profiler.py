@@ -338,3 +338,28 @@ def test_frozen(tmp_path: Path) -> None:
 @pytest.mark.parametrize("v", ["$", "1_000", "inf", "1e999"])
 def test_non_numeric_edge_cases(tmp_path: Path, v: str) -> None:
     assert single_col(tmp_path, [v]).numeric_fraction == 0.0
+
+
+# ------------------------------------------------------------ whole_numbers
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        (["53", "87.0", " 12 ", ""], True),
+        (["1.5", "2"], False),
+        (["abc", "1"], False),
+        (["$12", "3"], False),
+        (["50%", "3"], False),
+        (["1,200", "3"], False),
+        (["1_0", "3"], False),
+        (["inf", "3"], False),
+        (["0", "1"], True),
+        (["", "N/A"], False),
+    ],
+)
+def test_whole_numbers(tmp_path: Path, values: list[str], expected: bool) -> None:
+    assert single_col(tmp_path, values).whole_numbers is expected
+
+
+def test_whole_numbers_in_profile_dict(tmp_path: Path) -> None:
+    p = write_csv(tmp_path / "w.csv", "a\n1\n2.0\n")
+    assert profile_to_dict(profile_file(p))["columns"][0]["whole_numbers"] is True

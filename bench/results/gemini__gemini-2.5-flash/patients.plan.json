@@ -1,0 +1,149 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "gemini-2.5-flash",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "patient_id",
+      "dtype": "str"
+    },
+    {
+      "name": "age",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_kg",
+      "dtype": "float64"
+    },
+    {
+      "name": "income",
+      "dtype": "str"
+    },
+    {
+      "name": "blood_type",
+      "dtype": "str"
+    },
+    {
+      "name": "smoker",
+      "dtype": "str"
+    },
+    {
+      "name": "visit_date",
+      "dtype": "str"
+    },
+    {
+      "name": "satisfaction",
+      "dtype": "int64"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "age",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "All non-missing values are whole numbers."
+    },
+    {
+      "id": "a2",
+      "column": "age",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Measurement with missing values."
+    },
+    {
+      "id": "a3",
+      "column": "weight_kg",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s+",
+        "replacement": ""
+      },
+      "reason": "Remove formatting noise (spaces)."
+    },
+    {
+      "id": "a4",
+      "column": "weight_kg",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Ensure numeric type after stripping spaces."
+    },
+    {
+      "id": "a5",
+      "column": "weight_kg",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Measurement with missing values."
+    },
+    {
+      "id": "a6",
+      "column": "income",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove formatting noise."
+    },
+    {
+      "id": "a7",
+      "column": "income",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Numeric once stripped."
+    },
+    {
+      "id": "a8",
+      "column": "blood_type",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Inconsistent text categories."
+    },
+    {
+      "id": "a9",
+      "column": "smoker",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Mixed boolean spellings."
+    },
+    {
+      "id": "a10",
+      "column": "visit_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d-%b-%Y"
+      },
+      "reason": "Dates as text in a consistent format."
+    },
+    {
+      "id": "a11",
+      "column": "satisfaction",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 10
+      },
+      "reason": "Satisfaction scores have obvious bounds."
+    }
+  ]
+}

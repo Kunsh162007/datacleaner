@@ -1,0 +1,163 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "sku",
+      "dtype": "str"
+    },
+    {
+      "name": "name",
+      "dtype": "str"
+    },
+    {
+      "name": "category",
+      "dtype": "str"
+    },
+    {
+      "name": "price",
+      "dtype": "str"
+    },
+    {
+      "name": "margin_pct",
+      "dtype": "str"
+    },
+    {
+      "name": "stock",
+      "dtype": "float64"
+    },
+    {
+      "name": "rating",
+      "dtype": "float64"
+    },
+    {
+      "name": "in_stock",
+      "dtype": "str"
+    },
+    {
+      "name": "released",
+      "dtype": "str"
+    },
+    {
+      "name": "description",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "category",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize case and surrounding whitespace in category labels."
+    },
+    {
+      "id": "a2",
+      "column": "price",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\s*\\$\\s*",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols and surrounding spaces before numeric conversion."
+    },
+    {
+      "id": "a3",
+      "column": "price",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove thousands separators before numeric conversion."
+    },
+    {
+      "id": "a4",
+      "column": "price",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the fully numeric price text to floating-point values."
+    },
+    {
+      "id": "a5",
+      "column": "margin_pct",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "%",
+        "replacement": ""
+      },
+      "reason": "Remove percent signs before numeric conversion."
+    },
+    {
+      "id": "a6",
+      "column": "margin_pct",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert percentage text to floating-point values."
+    },
+    {
+      "id": "a7",
+      "column": "margin_pct",
+      "action": "clip",
+      "params": {
+        "min": 0,
+        "max": 100
+      },
+      "reason": "Constrain percentages to their natural 0-to-100 range."
+    },
+    {
+      "id": "a8",
+      "column": "stock",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number stock values to integers before filling missing values."
+    },
+    {
+      "id": "a9",
+      "column": "stock",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing stock counts with the median."
+    },
+    {
+      "id": "a10",
+      "column": "rating",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing rating values with the median."
+    },
+    {
+      "id": "a11",
+      "column": "in_stock",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Normalize mixed boolean spellings and numeric indicators to booleans."
+    },
+    {
+      "id": "a12",
+      "column": "released",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%m/%d/%Y"
+      },
+      "reason": "Parse consistently formatted month/day/year dates."
+    }
+  ]
+}

@@ -50,8 +50,16 @@ class ValidationResult:
         return not self.errors
 
 
-def validate_plan(plan: Any, file_columns: Sequence[str]) -> ValidationResult:
-    """Validate `plan` against the schema and against the data file's columns."""
+def validate_plan(
+    plan: Any,
+    file_columns: Sequence[str],
+    file_dtypes: Mapping[str, str] | None = None,
+) -> ValidationResult:
+    """Validate `plan` against the schema and against the data file's columns.
+
+    `file_dtypes` (real dtypes of the loaded file) override the dtypes the plan
+    declares, so a wrong or hand-edited plan cannot mislead the type checks.
+    """
     schema_errors = _schema_errors(plan)
     if schema_errors:
         # Semantic checks assume a well-formed plan; report shape problems first.
@@ -65,6 +73,8 @@ def validate_plan(plan: Any, file_columns: Sequence[str]) -> ValidationResult:
         *_column_agreement_errors(source_names, file_columns),
         *_queue_errors(actions, source_names),
         *_regex_errors(actions),
+        *_clip_errors(actions),
+        *_type_order_errors(actions, _effective_dtypes(plan["source_columns"], file_dtypes)),
     )
     needs_approval = tuple(a["id"] for a in actions if a["action"] in DESTRUCTIVE_ACTIONS)
     return ValidationResult(errors=errors, needs_approval=needs_approval)
@@ -140,6 +150,71 @@ def _regex_errors(actions: Sequence[Mapping[str, Any]]) -> tuple[str, ...]:
             errors.append(
                 f"action {action['id']}: regex pattern rejected by RE2 ({_re2_reason(exc)})"
             )
+    return tuple(errors)
+
+
+def _clip_errors(actions: Sequence[Mapping[str, Any]]) -> tuple[str, ...]:
+    """clip bounds must be ordered when both are given."""
+    errors: list[str] = []
+    for action in actions:
+        params = action["params"]
+        if action["action"] == "clip" and {"min", "max"} <= params.keys():
+            if params["min"] > params["max"]:
+                errors.append(f"action {action['id']}: clip min must not exceed max")
+    return tuple(errors)
+
+
+_NUMERIC_CASTS = frozenset({"int", "float"})
+_STAT_FILLS = frozenset({"mean", "median"})
+# regex_replace/strip yield text (object dtype) even on a numeric column.
+_TEXT_RESULT_ACTIONS = frozenset({"strip", "datetime_parse", "regex_replace"})
+
+
+def _is_numeric_dtype(dtype: str) -> bool:
+    return dtype.lower().startswith(("int", "float", "uint"))
+
+
+def _effective_dtypes(
+    source_columns: Sequence[Mapping[str, Any]], file_dtypes: Mapping[str, str] | None
+) -> dict[str, str]:
+    declared = {c["name"]: c["dtype"] for c in source_columns}
+    return {**declared, **{k: str(v) for k, v in (file_dtypes or {}).items()}}
+
+
+def _type_order_errors(
+    actions: Sequence[Mapping[str, Any]], dtypes: Mapping[str, str]
+) -> tuple[str, ...]:
+    """Track each column's numeric-ness through the queue.
+
+    Catches two ordering mistakes LLMs make in practice: a statistic fill (or
+    clip) on a column that is still text, and a numeric cast placed after a
+    statistic fill (the filled median, e.g. 245.5, then fails an int cast).
+    """
+    numeric = {name: _is_numeric_dtype(dtype) for name, dtype in dtypes.items()}
+    stat_filled_by: dict[str, str] = {}
+    errors: list[str] = []
+    for action in actions:
+        action_id, column, kind = action["id"], action["column"], action["action"]
+        params = action["params"]
+        needs_numeric = kind == "clip" or (
+            kind == "fillna" and params.get("strategy") in _STAT_FILLS
+        )
+        if needs_numeric and not numeric.get(column, False):
+            errors.append(
+                f"action {action_id}: {kind} on '{column}' needs a numeric column at this "
+                "point in the queue; cast it to int or float first"
+            )
+        if kind == "cast" and params["to"] in _NUMERIC_CASTS and column in stat_filled_by:
+            errors.append(
+                f"action {action_id}: cast of '{column}' comes after fillna action "
+                f"{stat_filled_by[column]}; put the fillna after the cast"
+            )
+        if kind == "cast":
+            numeric[column] = params["to"] in _NUMERIC_CASTS
+        elif kind in _TEXT_RESULT_ACTIONS:
+            numeric[column] = False
+        elif kind == "fillna" and params.get("strategy") in _STAT_FILLS:
+            stat_filled_by[column] = action_id
     return tuple(errors)
 
 

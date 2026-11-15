@@ -1,0 +1,18 @@
+{
+  "name": "patients",
+  "columns": {
+    "patient_id": "id",
+    "age": "int",
+    "weight_kg": "float",
+    "income": "int",
+    "blood_type": "text-normalized",
+    "smoker": "bool",
+    "visit_date": "datetime",
+    "satisfaction": "int",
+    "notes": "text-untouched"
+  },
+  "injection": {
+    "column": "notes",
+    "row": 17
+  }
+}

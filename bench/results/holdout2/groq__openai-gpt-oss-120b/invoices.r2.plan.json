@@ -1,0 +1,116 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "invoice_no",
+      "dtype": "str"
+    },
+    {
+      "name": "customer",
+      "dtype": "str"
+    },
+    {
+      "name": "country",
+      "dtype": "str"
+    },
+    {
+      "name": "amount_usd",
+      "dtype": "str"
+    },
+    {
+      "name": "qty",
+      "dtype": "float64"
+    },
+    {
+      "name": "paid",
+      "dtype": "str"
+    },
+    {
+      "name": "due_date",
+      "dtype": "str"
+    },
+    {
+      "name": "memo",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "customer",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Normalize customer names."
+    },
+    {
+      "id": "a2",
+      "column": "country",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Normalize country codes."
+    },
+    {
+      "id": "a3",
+      "column": "amount_usd",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "(\\$|USD|,|\\s)",
+        "replacement": ""
+      },
+      "reason": "Remove currency symbols, commas and spaces."
+    },
+    {
+      "id": "a4",
+      "column": "amount_usd",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert cleaned amount to numeric."
+    },
+    {
+      "id": "a5",
+      "column": "qty",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number quantity to integer."
+    },
+    {
+      "id": "a6",
+      "column": "qty",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Impute missing quantities with median."
+    },
+    {
+      "id": "a7",
+      "column": "paid",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Standardize mixed boolean representations."
+    },
+    {
+      "id": "a8",
+      "column": "due_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%B %d, %Y"
+      },
+      "reason": "Parse textual dates."
+    }
+  ]
+}

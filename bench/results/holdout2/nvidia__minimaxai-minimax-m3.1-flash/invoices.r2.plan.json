@@ -1,0 +1,126 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "invoice_no",
+      "dtype": "str"
+    },
+    {
+      "name": "customer",
+      "dtype": "str"
+    },
+    {
+      "name": "country",
+      "dtype": "str"
+    },
+    {
+      "name": "amount_usd",
+      "dtype": "str"
+    },
+    {
+      "name": "qty",
+      "dtype": "float64"
+    },
+    {
+      "name": "paid",
+      "dtype": "str"
+    },
+    {
+      "name": "due_date",
+      "dtype": "str"
+    },
+    {
+      "name": "memo",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "customer",
+      "action": "strip",
+      "params": {
+        "case": "title"
+      },
+      "reason": "Customer names vary by surrounding whitespace, repeated spaces, and letter case."
+    },
+    {
+      "id": "a2",
+      "column": "country",
+      "action": "strip",
+      "params": {
+        "case": "lower"
+      },
+      "reason": "Country codes vary by surrounding whitespace and letter case."
+    },
+    {
+      "id": "a3",
+      "column": "amount_usd",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "(?:USD\\s*|\\$)\\s*",
+        "replacement": ""
+      },
+      "reason": "Remove currency prefixes before removing thousands separators."
+    },
+    {
+      "id": "a4",
+      "column": "amount_usd",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove thousands separators from monetary values."
+    },
+    {
+      "id": "a5",
+      "column": "amount_usd",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the cleaned numeric text to a floating-point monetary value."
+    },
+    {
+      "id": "a6",
+      "column": "qty",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number quantities to integers before filling missing values."
+    },
+    {
+      "id": "a7",
+      "column": "qty",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing quantity values with the median."
+    },
+    {
+      "id": "a8",
+      "column": "paid",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Normalize mixed boolean spellings and numeric indicators."
+    },
+    {
+      "id": "a9",
+      "column": "due_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%B %d, %Y"
+      },
+      "reason": "Parse dates in the consistent month-name format."
+    }
+  ]
+}

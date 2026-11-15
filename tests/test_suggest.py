@@ -27,7 +27,7 @@ def test_valid_first_answer(csv) -> None:
     client = FakeClient({**GOOD, "generated_by": {"model": "evil"}, "extra": 1})
     result = suggest_plan(csv, client)
     assert result.attempts == 1 and result.validation.is_valid
-    assert result.plan["generated_by"] == {"model": "fake-model", "prompt_version": "2"}
+    assert result.plan["generated_by"] == {"model": "fake-model", "prompt_version": "5"}
     assert set(result.plan) == {"plan_version", "generated_by", "source_columns", "actions"}
     assert [c["name"] for c in result.plan["source_columns"]] == ["price", "age"]
 
@@ -66,7 +66,7 @@ ACTIONS = [
 PLAN = {
     "plan_version": 1,
     "generated_by": {"model": "m", "prompt_version": "1"},
-    "source_columns": [{"name": "price", "dtype": "object"}, {"name": "age", "dtype": "object"}],
+    "source_columns": [{"name": "price", "dtype": "object"}, {"name": "age", "dtype": "float64"}],
     "actions": ACTIONS,
 }
 
@@ -95,3 +95,18 @@ def test_review_reject_removes_later_same_column() -> None:
 def test_review_non_yes_answers_reject() -> None:
     new, _ = _review(["", "maybe"])  # a1, a2 rejected -> a3, a4 skipped as dependents
     assert new["actions"] == []
+
+
+def test_dry_run_failure_is_fed_back_and_retried(csv) -> None:
+    # Valid by schema and validator, but casting the "$" prices blanks the column.
+    blanks_prices = {"actions": [action("a1", "price", "cast", {"to": "float"})]}
+    client = FakeClient(blanks_prices, GOOD)
+    result = suggest_plan(csv, client)
+    assert result.attempts == 2
+    assert "dry run on the real file failed" in client.calls[1][1]
+
+
+def test_dry_run_failure_twice_raises(csv) -> None:
+    blanks_prices = {"actions": [action("a1", "price", "cast", {"to": "float"})]}
+    with pytest.raises(SuggestError, match="dry run"):
+        suggest_plan(csv, FakeClient(blanks_prices, blanks_prices))

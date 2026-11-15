@@ -16,7 +16,9 @@ def run(name: str, df: pd.DataFrame, column: str, params: dict) -> ActionOutcome
 
 
 def test_dispatch_is_read_only_and_complete() -> None:
-    assert set(DISPATCH) == {"cast", "fillna", "regex_replace", "drop"}
+    assert set(DISPATCH) == {
+        "cast", "fillna", "regex_replace", "drop", "strip", "datetime_parse", "clip"
+    }
     with pytest.raises(TypeError):
         DISPATCH["x"] = lambda *a: None  # type: ignore[index]
 
@@ -134,3 +136,80 @@ def test_drop() -> None:
 def test_unknown_column_raises() -> None:
     with pytest.raises(ActionError, match="not found"):
         DISPATCH["drop"](pd.DataFrame({"a": [1]}), "zz", {})
+
+
+# -------------------------------------------------------------- new actions
+@pytest.mark.parametrize(
+    ("case", "expected"),
+    [("none", "New  york"), ("lower", "new york"), ("upper", "NEW YORK"), ("title", "New York")],
+)
+def test_strip_trims_collapses_and_applies_case(case, expected) -> None:
+    df = pd.DataFrame({"a": ["  New \t york  "]})
+    out = run("strip", df, "a", {"case": case})
+    expected = "New york" if case == "none" else expected
+    assert out.df["a"].iloc[0] == expected
+    assert out.stats == {"changed": 1}
+
+
+def test_strip_leaves_missing_and_non_strings() -> None:
+    df = pd.DataFrame({"a": pd.Series([" x ", None, 5], dtype="object")})
+    out = run("strip", df, "a", {"case": "none"})
+    assert out.df["a"].iloc[0] == "x"
+    assert pd.isna(out.df["a"].iloc[1]) and out.df["a"].iloc[2] == 5
+
+
+def test_strip_string_dtype_and_bad_case() -> None:
+    df = pd.DataFrame({"a": pd.array([" a ", None], dtype="string")})
+    out = run("strip", df, "a", {"case": "upper"})
+    assert str(out.df["a"].dtype) == "string" and out.df["a"].iloc[0] == "A"
+    with pytest.raises(ActionError, match="case"):
+        DISPATCH["strip"](df, "a", {"case": "snake"})
+
+
+def test_datetime_parse_valid_and_coerced() -> None:
+    df = pd.DataFrame({"d": ["05/03/2024", "31/12/2023", "bad", None]})
+    out = run("datetime_parse", df, "d", {"format": "%d/%m/%Y"})
+    assert str(out.df["d"].dtype) == "datetime64[ns]" or "datetime64" in str(out.df["d"].dtype)
+    assert out.df["d"].iloc[0] == pd.Timestamp("2024-03-05")
+    assert out.df["d"].isna().tolist() == [False, False, True, True]
+    assert out.stats == {"coerced": 1}
+
+
+def test_datetime_parse_requires_format() -> None:
+    with pytest.raises(ActionError, match="format"):
+        DISPATCH["datetime_parse"](pd.DataFrame({"d": ["x"]}), "d", {})
+
+
+def test_clip_bounds_and_stats() -> None:
+    df = pd.DataFrame({"a": [-5.0, 50.0, 500.0, None]})
+    out = run("clip", df, "a", {"min": 0, "max": 100})
+    assert out.df["a"].tolist()[:3] == [0.0, 50.0, 100.0]
+    assert out.stats == {"clipped": 2}
+    assert run("clip", df, "a", {"max": 10}).df["a"].iloc[1] == 10.0
+
+
+def test_clip_int64_and_errors() -> None:
+    df = pd.DataFrame({"a": pd.array([1, 200, None], dtype="Int64")})
+    assert run("clip", df, "a", {"min": 0, "max": 100}).df["a"].tolist()[:2] == [1, 100]
+    with pytest.raises(ActionError, match="numeric"):
+        DISPATCH["clip"](pd.DataFrame({"a": ["x"]}), "a", {"min": 0})
+    with pytest.raises(ActionError, match="numeric"):
+        DISPATCH["clip"](pd.DataFrame({"a": [True]}), "a", {"min": 0})
+    with pytest.raises(ActionError, match="min"):
+        DISPATCH["clip"](pd.DataFrame({"a": [1]}), "a", {})
+
+
+def test_fillna_median_on_int_column_stays_integer_half_to_even() -> None:
+    import pandas as pd
+
+    from datacleaner.actions import fillna
+
+    df = pd.DataFrame({"n": pd.array([1, 2, None, 4, 5, 6], dtype="Int64")})
+    median = fillna(df, "n", {"strategy": "median"}).df  # median 4 -> 4
+    assert str(median["n"].dtype) == "Int64" and median["n"].tolist() == [1, 2, 4, 4, 5, 6]
+    even = pd.DataFrame({"n": pd.array([1, 2, None, 4], dtype="Int64")})
+    assert fillna(even, "n", {"strategy": "mean"}).df["n"][2] == 2  # 2.33 -> 2
+    half = pd.DataFrame({"n": pd.array([2, 3, None], dtype="Int64")})
+    assert fillna(half, "n", {"strategy": "median"}).df["n"][2] == 2  # 2.5 -> 2 (even)
+    floats = pd.DataFrame({"n": [2.0, 3.0, None]})
+    assert fillna(floats, "n", {"strategy": "median"}).df["n"][2] == 2.5

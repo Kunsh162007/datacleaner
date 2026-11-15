@@ -6,6 +6,7 @@ import pandas as pd
 
 from datacleaner.profiler import profile_file
 from datacleaner.prompt import (
+    ACTION_NAMES,
     MAX_PROMPT_BYTES,
     PROMPT_VERSION,
     SYSTEM_PROMPT,
@@ -63,7 +64,7 @@ def test_response_schema_has_column_enum() -> None:
     schema = response_schema(["a", "b"])
     item = schema["properties"]["actions"]["items"]
     assert item["properties"]["column"]["enum"] == ["a", "b"]
-    assert item["properties"]["action"]["enum"] == ["cast", "fillna", "regex_replace", "drop"]
+    assert item["properties"]["action"]["enum"] == ACTION_NAMES
     assert "additionalProperties" not in str(schema)
     assert "'if'" not in str(schema)
 
@@ -79,12 +80,33 @@ def test_retry_prompt_lists_truncated_errors_max_20() -> None:
 
 
 def test_prompt_version() -> None:
-    assert PROMPT_VERSION == "2"
+    assert PROMPT_VERSION == "5"
 
 
 def test_system_prompt_has_column_checklist() -> None:
     from datacleaner.prompt import SYSTEM_PROMPT
 
-    for rule in ("EVERY column", "Boolean-like", '"bool"', '"median"', "AFTER any cast"):
+    for rule in ("EVERY column", "Boolean-like", '"bool"', '"median"', "AFTER the cast"):
         assert rule in SYSTEM_PROMPT
     assert "Prefer minimal" not in SYSTEM_PROMPT
+
+
+def test_system_prompt_states_policy_and_stays_compact() -> None:
+    from datacleaner.prompt import SYSTEM_PROMPT
+
+    for text in ("NEVER fill money columns", "salary", "AFTER the cast", '"53.0"', '"upper"'):
+        assert text in SYSTEM_PROMPT
+    assert len(SYSTEM_PROMPT.encode("utf-8")) < 3_700
+
+
+def test_column_line_carries_whole_numbers_flag(tmp_path) -> None:
+    from datacleaner.profiler import profile_file
+
+    path = tmp_path / "w.csv"
+    path.write_text("n\n53\n87.0\n\n", encoding="utf-8")
+    text = build_user_prompt(profile_file(path))
+    assert '"whole_numbers": true' in text
+
+
+def test_system_prompt_whole_number_rule() -> None:
+    assert '"whole_numbers": true' in SYSTEM_PROMPT and "BEFORE any fillna" in SYSTEM_PROMPT

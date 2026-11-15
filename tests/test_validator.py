@@ -229,3 +229,99 @@ def test_schema_errors_skip_semantic_checks():
 
     assert any("decimal" in e for e in errors)
     assert not any("salary" in e for e in errors)
+
+
+# -------------------------------------------------------------- new actions
+@pytest.mark.parametrize(
+    ("name", "params"),
+    [
+        ("strip", {"case": "title"}),
+        ("datetime_parse", {"format": "%d/%m/%Y"}),
+        ("datetime_parse", {"format": "%Y-%m-%dT%H:%M:%S"}),
+        ("clip", {"min": 0}),
+        ("clip", {"min": 0, "max": 1.5}),
+    ],
+)
+def test_new_actions_valid(name, params):
+    assert errors_for(make_plan(action("a1", "age" if name == "clip" else "price", name, params))) == ()
+
+
+@pytest.mark.parametrize(
+    ("name", "params"),
+    [
+        ("strip", {}),
+        ("strip", {"case": "snake"}),
+        ("datetime_parse", {"format": "%d/%m/%Y%z"}),
+        ("datetime_parse", {"format": "%d/%m/%Y; drop"}),
+        ("datetime_parse", {"format": "x" * 41}),
+        ("clip", {}),
+        ("clip", {"min": "0"}),
+        ("clip", {"min": 0, "extra": 1}),
+    ],
+)
+def test_new_actions_bad_params(name, params):
+    assert errors_for(make_plan(action("a1", "price", name, params)))
+
+
+def test_clip_min_above_max_rejected():
+    errs = errors_for(make_plan(action("a1", "price", "clip", {"min": 5, "max": 1})))
+    assert any("min must not exceed max" in e for e in errs)
+
+
+def test_new_actions_are_not_destructive():
+    plan = make_plan(action("a1", "price", "strip", {"case": "none"}))
+    assert validate_plan(plan, FILE_COLUMNS).needs_approval == ()
+
+
+# --- type/order checks (added after benchmark: LLMs filled before casting) ---
+
+def _typed_plan(actions, dtypes):
+    return {
+        "plan_version": 1,
+        "generated_by": {"model": "m", "prompt_version": "4"},
+        "source_columns": [{"name": n, "dtype": d} for n, d in dtypes.items()],
+        "actions": actions,
+    }
+
+
+def _act(i, col, kind, params):
+    return {"id": i, "column": col, "action": kind, "params": params, "reason": "r"}
+
+
+def test_median_fill_on_text_column_rejected():
+    plan = _typed_plan([_act("a1", "w", "fillna", {"strategy": "median"})], {"w": "str"})
+    errors = validate_plan(plan, ["w"]).errors
+    assert any("needs a numeric column" in e for e in errors)
+
+
+def test_median_fill_after_numeric_cast_accepted():
+    plan = _typed_plan(
+        [_act("a1", "w", "cast", {"to": "float"}), _act("a2", "w", "fillna", {"strategy": "median"})],
+        {"w": "str"},
+    )
+    assert validate_plan(plan, ["w"]).is_valid
+
+
+def test_int_cast_after_median_fill_rejected():
+    plan = _typed_plan(
+        [_act("a1", "s", "fillna", {"strategy": "median"}), _act("a2", "s", "cast", {"to": "int"})],
+        {"s": "float64"},
+    )
+    errors = validate_plan(plan, ["s"]).errors
+    assert any("comes after fillna action a1" in e for e in errors)
+
+
+def test_constant_fill_needs_no_numeric_column():
+    plan = _typed_plan(
+        [_act("a1", "t", "fillna", {"strategy": "constant", "value": "x"})], {"t": "str"}
+    )
+    assert validate_plan(plan, ["t"]).is_valid
+
+
+def test_clip_after_strip_rejected():
+    plan = _typed_plan(
+        [_act("a1", "n", "strip", {"case": "none"}), _act("a2", "n", "clip", {"min": 0})],
+        {"n": "float64"},
+    )
+    errors = validate_plan(plan, ["n"]).errors
+    assert any("clip on 'n' needs a numeric column" in e for e in errors)

@@ -1,0 +1,139 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "groq/openai/gpt-oss-120b",
+    "prompt_version": "4"
+  },
+  "source_columns": [
+    {
+      "name": "patient_id",
+      "dtype": "str"
+    },
+    {
+      "name": "age",
+      "dtype": "float64"
+    },
+    {
+      "name": "weight_kg",
+      "dtype": "float64"
+    },
+    {
+      "name": "income",
+      "dtype": "str"
+    },
+    {
+      "name": "blood_type",
+      "dtype": "str"
+    },
+    {
+      "name": "smoker",
+      "dtype": "str"
+    },
+    {
+      "name": "visit_date",
+      "dtype": "str"
+    },
+    {
+      "name": "satisfaction",
+      "dtype": "int64"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "age",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "All ages are whole numbers, cast to int."
+    },
+    {
+      "id": "a2",
+      "column": "age",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing ages with median."
+    },
+    {
+      "id": "a3",
+      "column": "weight_kg",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "^\\s+|\\s+$",
+        "replacement": ""
+      },
+      "reason": "Remove leading/trailing spaces from weight values."
+    },
+    {
+      "id": "a4",
+      "column": "weight_kg",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Cast cleaned weights to float."
+    },
+    {
+      "id": "a5",
+      "column": "weight_kg",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing weights with median."
+    },
+    {
+      "id": "a6",
+      "column": "income",
+      "action": "regex_replace",
+      "params": {
+        "pattern": ",",
+        "replacement": ""
+      },
+      "reason": "Remove commas from income strings."
+    },
+    {
+      "id": "a7",
+      "column": "income",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Cast cleaned income to int."
+    },
+    {
+      "id": "a8",
+      "column": "blood_type",
+      "action": "strip",
+      "params": {
+        "case": "upper"
+      },
+      "reason": "Trim whitespace and uppercase blood type codes."
+    },
+    {
+      "id": "a9",
+      "column": "smoker",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean representations to bool."
+    },
+    {
+      "id": "a10",
+      "column": "visit_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%d-%b-%Y"
+      },
+      "reason": "Parse visit dates with format %d-%b-%Y."
+    }
+  ]
+}
