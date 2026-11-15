@@ -1,0 +1,66 @@
+name: Data hygiene
+
+# Runs on every push and pull request (all branches), and on demand.
+# Note: no `paths:` filter at workflow level on purpose, because it would also
+# skip the test job. The data-hygiene job therefore always runs.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# Point these at your real data and cleaning plan. The defaults use the bundled
+# example so the workflow passes out of the box.
+env:
+  DATA_FILE: examples/messy.csv
+  PLAN_FILE: examples/cleaning_plan.json
+  MAX_COERCE: "0.05"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install package with dev extras
+        run: pip install -e ".[dev]"
+      - name: Run tests
+        run: pytest -q --cov=datacleaner --cov-report=term-missing
+
+  data-hygiene:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install package
+        run: pip install .
+      - name: Clean data
+        run: >-
+          datacleaner apply
+          --in "$DATA_FILE"
+          --plan "$PLAN_FILE"
+          --out-dir cleaned
+          --max-coerce "$MAX_COERCE"
+      - name: Publish audit report to job summary
+        if: success()
+        run: cat cleaned/audit_report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload cleaned data and reports
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleaned-data
+          path: cleaned/
+          if-no-files-found: error

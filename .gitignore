@@ -1,0 +1,13 @@
+# Local learning notes (VibeWise)
+.vibe-wise/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+.serena/

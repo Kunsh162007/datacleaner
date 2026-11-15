@@ -1,0 +1,19 @@
+{
+  "plan_version": 1,
+  "generated_by": { "model": "hand-written", "prompt_version": "0" },
+  "source_columns": [
+    { "name": "customer_id", "dtype": "int64" },
+    { "name": "price", "dtype": "str" },
+    { "name": "signup_date", "dtype": "str" },
+    { "name": "age", "dtype": "float64" },
+    { "name": "active", "dtype": "str" },
+    { "name": "notes", "dtype": "str" }
+  ],
+  "actions": [
+    { "id": "a1", "column": "price", "action": "regex_replace", "params": { "pattern": "[$,]", "replacement": "" }, "reason": "Strip currency symbols and thousands separators so price can be parsed as a number." },
+    { "id": "a2", "column": "price", "action": "cast", "params": { "to": "float" }, "reason": "Prices are numeric amounts; cast to float after stripping symbols." },
+    { "id": "a3", "column": "age", "action": "fillna", "params": { "strategy": "median" }, "reason": "A few ages are blank; the median is robust to outliers." },
+    { "id": "a4", "column": "active", "action": "cast", "params": { "to": "bool" }, "reason": "Normalize yes/no/true/false/1 flags to booleans." },
+    { "id": "a5", "column": "notes", "action": "drop", "params": {}, "reason": "Free-text notes are not needed downstream and may contain personal details." }
+  ]
+}
