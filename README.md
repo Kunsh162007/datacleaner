@@ -14,6 +14,26 @@ messy.csv → profile → prompt → Gemini → JSON Schema + semantic checks �
 messy.csv + cleaning_plan.json → validate → whitelisted actions → cleaned file + diff + audit
 ```
 
+## Quick start
+
+```bash
+git clone https://github.com/Kunsh162007/datacleaner.git
+cd datacleaner
+python -m venv .venv
+.venv\Scripts\activate        # macOS/Linux: source .venv/bin/activate
+pip install .
+datacleaner ui                 # opens the web app in your browser
+```
+
+The app walks through: choose a file (a sample is built in, or upload CSV/XLSX), profile it,
+ask an LLM for a cleaning plan, apply it deterministically, and review changed cells plus an audit.
+
+**API keys.** Suggesting a plan needs a free key from one provider:
+[NVIDIA](https://build.nvidia.com) (default), [Google AI Studio](https://aistudio.google.com/apikey)
+(Gemini) or the [Groq console](https://console.groq.com). Paste it into the app sidebar (used only
+in that browser session, never saved), or copy `.env.example` to `.env` and fill in the matching
+variable. **No key?** Click "Use saved demo plan" to try the whole flow offline.
+
 ## Install
 
 ```bash

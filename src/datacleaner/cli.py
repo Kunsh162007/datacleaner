@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 import tempfile
 from collections.abc import Callable, Sequence
@@ -13,15 +14,9 @@ from typing import Any
 
 import pandas as pd
 
-from datacleaner.engine import DEFAULT_MAX_COERCE, EngineError, run_plan
+from datacleaner.engine import DEFAULT_MAX_COERCE
 from datacleaner.io import read_table, write_table
-from datacleaner.report import (
-    add_row_id,
-    build_audit,
-    build_diff,
-    drop_row_id,
-    render_audit_markdown,
-)
+from datacleaner.pipeline import ApplyError, apply_plan
 from datacleaner.llm import LLMClient, LLMError
 from datacleaner.providers import AUTO_ORDER, AUTO_PROVIDER, DEFAULT_PROVIDER, PROVIDERS, client_for
 from datacleaner.suggest import SuggestError, review_interactively, suggest_plan
@@ -29,6 +24,7 @@ from datacleaner.validator import validate_plan
 
 EXIT_OK = 0
 EXIT_FAILURE = 1
+DEFAULT_UI_PORT = 8501
 
 
 class CliError(Exception):
@@ -61,7 +57,22 @@ def _build_parser() -> argparse.ArgumentParser:
     suggest_p.add_argument("--model", default=None, help="default: the provider's own default")
     suggest_p.add_argument("--interactive", action="store_true")
     suggest_p.add_argument("--force", action="store_true")
+    ui_p = sub.add_parser("ui", help="open the local web app in your browser")
+    ui_p.add_argument("--port", type=int, default=DEFAULT_UI_PORT)
     return parser
+
+
+def _launch_ui(args: argparse.Namespace) -> None:
+    from datacleaner.ui.helpers import APP_PATH
+
+    cmd = [sys.executable, "-m", "streamlit", "run", str(APP_PATH),
+           "--server.headless", "false", "--server.port", str(args.port)]
+    try:
+        completed = subprocess.run(cmd, check=False)
+    except KeyboardInterrupt:
+        return
+    if completed.returncode:
+        raise CliError(f"web app exited with code {completed.returncode}")
 
 
 def _load_plan(path: Path) -> Any:
@@ -110,32 +121,20 @@ def _data_notice(provider: str) -> str:
 def _apply(args: argparse.Namespace) -> None:
     df = _read_input(args.input)
     plan = _load_plan(args.plan)
-    validation = validate_plan(plan, list(df.columns), df.dtypes.astype(str).to_dict())
-    if not validation.is_valid:
-        raise CliError("plan is invalid:\n" + "\n".join(f"  - {e}" for e in validation.errors))
-    original = add_row_id(df)
     try:
-        result = run_plan(original, plan["actions"], max_coerce=args.max_coerce)
-    except EngineError as exc:
-        raise CliError(f"cleaning failed: {exc}") from exc
-    diff = build_diff(original, result.df)
-    audit = build_audit(
-        input_path=str(args.input),
-        plan_path=str(args.plan),
-        plan=plan,
-        needs_approval=validation.needs_approval,
-        steps=result.steps,
-        diff=diff,
-    )
+        outcome = apply_plan(
+            df, plan, input_path=args.input, plan_path=args.plan, max_coerce=args.max_coerce
+        )
+    except ApplyError as exc:
+        raise CliError(str(exc)) from exc
     cleaned_name = f"cleaned_{args.input.stem}{args.input.suffix.lower()}"
-    cleaned = drop_row_id(result.df)
     _write_all(
         args.out_dir,
         {
-            cleaned_name: lambda path: write_table(cleaned, path),
-            "audit_report.md": _text_writer(render_audit_markdown(audit)),
-            "audit_report.json": _text_writer(json.dumps(audit, indent=2)),
-            "diff_report.txt": _text_writer(diff.report_text),
+            cleaned_name: lambda path: write_table(outcome.cleaned, path),
+            "audit_report.md": _text_writer(outcome.audit_markdown),
+            "audit_report.json": _text_writer(json.dumps(outcome.audit, indent=2)),
+            "diff_report.txt": _text_writer(outcome.diff.report_text),
         },
     )
     print(f"datacleaner: wrote {cleaned_name} and reports to {args.out_dir}")
@@ -191,7 +190,9 @@ def main(
     except SystemExit as exc:
         return int(exc.code) if isinstance(exc.code, int) else EXIT_FAILURE
     try:
-        if args.command == "suggest":
+        if args.command == "ui":
+            _launch_ui(args)
+        elif args.command == "suggest":
             _suggest(args, client_factory, ask)
         else:
             _apply(args)

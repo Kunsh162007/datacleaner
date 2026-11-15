@@ -11,3 +11,7 @@ __pycache__/
 htmlcov/
 .env
 .serena/
+
+# Demo video artefacts
+demo/
+build/

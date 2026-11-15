@@ -185,7 +185,11 @@ def _auto_client(model: str | None, notify: Callable[[str], None]) -> FallbackCl
 
 
 def client_for(
-    provider: str, model: str | None = None, *, notify: Callable[[str], None] = _stderr_note
+    provider: str,
+    model: str | None = None,
+    *,
+    api_key: str | None = None,
+    notify: Callable[[str], None] = _stderr_note,
 ) -> LLMClient:
     """Build a client for a registered provider, reading its key from env/.env.
 
@@ -197,7 +201,7 @@ def client_for(
     if spec is None:
         raise LLMError(f"unknown provider '{provider}'; choose from {', '.join(PROVIDERS)}")
     chosen = model or spec.default_model
-    key = require_api_key(spec.env)
+    key = (api_key or "").strip() or require_api_key(spec.env)
     if spec.base_url is None:
         return GeminiClient(key, chosen)
     return OpenAICompatClient(key, chosen, spec.base_url, provider=provider)

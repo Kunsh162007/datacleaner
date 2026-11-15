@@ -16,6 +16,7 @@ dependencies = [
     "openpyxl>=3.1",
     "google-genai>=1.0",
     "python-dotenv>=1.0",
+    "streamlit>=1.40",
 ]
 
 [project.scripts]
@@ -23,13 +24,17 @@ datacleaner = "datacleaner.cli:run"
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-cov>=5"]
+video = ["edge-tts>=6.1"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-datacleaner = ["plan.schema.json"]
+datacleaner = ["plan.schema.json", "ui/demo_plan.json", "ui/samples/*.csv"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.coverage.run]
+omit = ["*/datacleaner/ui/app.py"]

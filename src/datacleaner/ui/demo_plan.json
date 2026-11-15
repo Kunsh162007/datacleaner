@@ -1,0 +1,90 @@
+{
+  "plan_version": 1,
+  "generated_by": {
+    "model": "nvidia/minimaxai/minimax-m3.1-flash",
+    "prompt_version": "5"
+  },
+  "source_columns": [
+    {
+      "name": "customer_id",
+      "dtype": "int64"
+    },
+    {
+      "name": "price",
+      "dtype": "str"
+    },
+    {
+      "name": "signup_date",
+      "dtype": "str"
+    },
+    {
+      "name": "age",
+      "dtype": "float64"
+    },
+    {
+      "name": "active",
+      "dtype": "str"
+    },
+    {
+      "name": "notes",
+      "dtype": "str"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "column": "price",
+      "action": "regex_replace",
+      "params": {
+        "pattern": "\\$",
+        "replacement": ""
+      },
+      "reason": "Strip dollar signs from numeric price text before casting."
+    },
+    {
+      "id": "a2",
+      "column": "price",
+      "action": "cast",
+      "params": {
+        "to": "float"
+      },
+      "reason": "Convert the cleaned numeric price text to floats while leaving the missing value unfilled."
+    },
+    {
+      "id": "a3",
+      "column": "signup_date",
+      "action": "datetime_parse",
+      "params": {
+        "format": "%Y-%m-%d"
+      },
+      "reason": "Parse consistently formatted ISO dates."
+    },
+    {
+      "id": "a4",
+      "column": "age",
+      "action": "cast",
+      "params": {
+        "to": "int"
+      },
+      "reason": "Convert whole-number ages to integers before filling missing values."
+    },
+    {
+      "id": "a5",
+      "column": "age",
+      "action": "fillna",
+      "params": {
+        "strategy": "median"
+      },
+      "reason": "Fill missing age measurements with the median."
+    },
+    {
+      "id": "a6",
+      "column": "active",
+      "action": "cast",
+      "params": {
+        "to": "bool"
+      },
+      "reason": "Convert mixed boolean-like values to booleans."
+    }
+  ]
+}
